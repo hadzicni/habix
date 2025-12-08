@@ -37,12 +37,12 @@ export class ConfettiService {
     explosionOrigin?: { x: number; y: number };
   }) {
     const defaults = {
-      particleCount: 200,
+      particleCount: 30,
       spreadAngle: 360,
-      startVelocity: 25,
-      colors: ['#667eea', '#f093fb', '#4facfe', '#43e97b', '#feca57', '#ff6b6b', '#a29bfe', '#fd79a8'],
-      shapes: ['circle', 'square', 'triangle', 'star', 'heart'] as Array<'circle' | 'square' | 'triangle' | 'star' | 'heart'>,
-      gravity: 0.3,
+      startVelocity: 12,
+      colors: ['#667eea', '#f093fb', '#4facfe', '#43e97b', '#feca57', '#ff6b6b'],
+      shapes: ['circle', 'square'] as Array<'circle' | 'square' | 'triangle' | 'star' | 'heart'>,
+      gravity: 0.5,
       explosionOrigin: { x: window.innerWidth / 2, y: window.innerHeight / 2 }
     };
 
@@ -57,6 +57,7 @@ export class ConfettiService {
     this.canvas.style.height = '100%';
     this.canvas.style.pointerEvents = 'none';
     this.canvas.style.zIndex = '9999';
+    this.canvas.style.background = 'transparent';
 
     document.body.appendChild(this.canvas);
 
@@ -99,9 +100,8 @@ export class ConfettiService {
   private animate(gravity: number) {
     if (!this.ctx || !this.canvas) return;
 
-    // Semi-transparent background for trail effect
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    // Clear canvas with transparency (no black background)
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.particles.forEach((particle, index) => {
       if (!this.ctx) return;

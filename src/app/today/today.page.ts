@@ -154,21 +154,21 @@ export class TodayPage implements OnInit {
 
   private completeHabitWithNote(note?: string) {
     if (!this.selectedHabit) return;
-    
+
     // Haptic feedback
     Haptics.impact({ style: ImpactStyle.Medium });
-    
+
     this.habitService.completeHabit(this.selectedHabit.id!, note).subscribe({
       next: async () => {
         this.showToast(`${this.selectedHabit!.title} completed! 🎉`);
-        
-        // Show confetti for every completion
-        this.confettiService.createConfetti(4000);
-        Haptics.impact({ style: ImpactStyle.Heavy });
-        
+
+        // Show confetti for every completion (subtle version)
+        this.confettiService.createConfetti(1500);
+        Haptics.impact({ style: ImpactStyle.Medium });
+
         // Get updated stats for notifications
         const stats = await this.habitService.getHabitStatistics(this.selectedHabit!.id!).toPromise();
-        
+
         if (stats) {
           // Schedule encouragement notification for milestones
           if ([1, 3, 7, 14, 30, 50, 100].includes(stats.current_streak)) {
@@ -178,7 +178,7 @@ export class TodayPage implements OnInit {
             );
           }
         }
-        
+
         this.selectedHabit = null;
       },
       error: (error) => {
