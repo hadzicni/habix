@@ -11,7 +11,7 @@ import { ThemeService } from './services/theme.service';
 })
 export class AppComponent implements OnInit {
   isOfflineToastOpen = false;
-  offlineMessage = '⚠️ You are offline. All changes will be saved locally and synced to the cloud when internet connection is available.';
+  offlineMessage = 'You are offline. All changes will be saved locally and synced to the cloud when internet connection is available.';
 
   constructor(
     private themeService: ThemeService,
