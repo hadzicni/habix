@@ -1,3 +1,13 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
+
+  <!-- Offline Toast -->
+  <ion-toast
+    [isOpen]="isOfflineToastOpen"
+    [message]="offlineMessage"
+    [duration]="5000"
+    position="top"
+    color="warning"
+    (didDismiss)="isOfflineToastOpen = false"
+  ></ion-toast>
 </ion-app>
