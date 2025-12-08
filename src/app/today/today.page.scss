@@ -100,12 +100,31 @@
   }
 }
 
+// Sliding Item Styles
+ion-item-sliding {
+  margin-bottom: 12px;
+}
+
+.sliding-item {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+  --border-width: 0;
+}
+
+ion-item-option {
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
 // Habit Cards
 .habit-card {
   background: var(--ion-color-light);
   border-radius: 16px;
   padding: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -114,6 +133,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   animation: fadeIn 0.3s ease-out;
   cursor: pointer;
+  width: 100%;
 
   &:active {
     transform: scale(0.98);
@@ -130,12 +150,40 @@
   }
 }
 
+.habit-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 24px;
+    color: white;
+  }
+}
+
 .habit-checkbox {
   flex-shrink: 0;
 
   ion-checkbox {
     --size: 28px;
     --border-radius: 10px;
+    transition: transform 0.2s ease;
+    
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+  
+  ion-checkbox::part(container) {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  ion-checkbox.checkbox-checked {
+    animation: checkBounce 0.5s ease;
   }
 }
 
@@ -240,6 +288,29 @@ ion-fab-button {
   from {
     opacity: 0;
     transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes checkBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;

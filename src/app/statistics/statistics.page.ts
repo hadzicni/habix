@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   calendar,
@@ -24,7 +32,16 @@ interface HabitWithStats {
   selector: 'app-statistics',
   templateUrl: 'statistics.page.html',
   styleUrls: ['statistics.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, CommonModule, IonIcon],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    CommonModule,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent,
+  ],
 })
 export class StatisticsPage implements OnInit {
   selectedSegment = 'overview';
@@ -147,5 +164,37 @@ export class StatisticsPage implements OnInit {
     const longestStreak = habitWithStats.stats.longest_streak;
     if (longestStreak === 0) return 0;
     return Math.min((currentStreak / longestStreak) * 100, 100);
+  }
+
+  async handleRefresh(event: any) {
+    // Reload habits with stats
+    this.habitsWithStats$ = this.habitService.habits$.pipe(
+      switchMap((habits) =>
+        from(
+          Promise.all(
+            habits.map(async (habit) => {
+              const stats = await this.habitService.getHabitStatistics(habit.id!).toPromise();
+              return {
+                habit,
+                stats:
+                  stats ||
+                  ({
+                    habit_id: habit.id!,
+                    current_streak: habit.streak_count,
+                    longest_streak: habit.streak_count,
+                    total_completions: 0,
+                    weekly_data: [],
+                    monthly_data: [],
+                  } as HabitStatistics),
+              };
+            }),
+          ),
+        ),
+      ),
+    );
+
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 }

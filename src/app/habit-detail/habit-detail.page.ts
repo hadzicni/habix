@@ -3,31 +3,47 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonTextarea,
-  IonTitle,
-  IonToast,
-  IonToggle,
-  IonToolbar,
+    IonBackButton,
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonInput,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonTextarea,
+    IonTitle,
+    IonToast,
+    IonToggle,
+    IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  closeOutline,
-  notificationsOutline,
-  saveOutline,
-  timeOutline,
-  trashOutline,
+    barbell,
+    bed,
+    bicycle,
+    book,
+    brush,
+    checkmarkCircle,
+    closeOutline,
+    fitness,
+    heart,
+    leaf,
+    medkit,
+    moon,
+    musicalNotes,
+    notificationsOutline,
+    restaurant,
+    saveOutline,
+    sunny,
+    timeOutline,
+    trashOutline,
+    walk,
+    water,
 } from 'ionicons/icons';
-import { Habit } from '../interfaces/habit.interface';
+import { Habit, HabitCompletion } from '../interfaces/habit.interface';
 import { HabitService } from '../services/habit.service';
 import { NotificationService } from '../services/notification.service';
 
@@ -61,6 +77,7 @@ export class HabitDetailPage implements OnInit {
   isNewHabit = true;
   isToastOpen = false;
   toastMessage = '';
+  completions: (HabitCompletion & { formattedDate?: string })[] = [];
 
   habit: Partial<Habit> = {
     title: '',
@@ -69,7 +86,43 @@ export class HabitDetailPage implements OnInit {
     reminder_time: '',
     is_active: true,
     streak_count: 0,
+    icon: 'checkmark-circle',
+    color: '#667eea',
   };
+
+  availableIcons = [
+    { name: 'checkmark-circle', label: 'Check' },
+    { name: 'fitness', label: 'Fitness' },
+    { name: 'barbell', label: 'Gym' },
+    { name: 'walk', label: 'Walk' },
+    { name: 'bicycle', label: 'Bike' },
+    { name: 'book', label: 'Read' },
+    { name: 'water', label: 'Water' },
+    { name: 'restaurant', label: 'Food' },
+    { name: 'bed', label: 'Sleep' },
+    { name: 'moon', label: 'Night' },
+    { name: 'sunny', label: 'Day' },
+    { name: 'leaf', label: 'Nature' },
+    { name: 'medkit', label: 'Health' },
+    { name: 'brush', label: 'Art' },
+    { name: 'musical-notes', label: 'Music' },
+    { name: 'heart', label: 'Love' },
+  ];
+
+  availableColors = [
+    '#667eea', // Purple
+    '#f093fb', // Pink
+    '#4facfe', // Blue
+    '#43e97b', // Green
+    '#fa709a', // Rose
+    '#feca57', // Yellow
+    '#ff6b6b', // Red
+    '#48dbfb', // Cyan
+    '#ff9ff3', // Light Pink
+    '#54a0ff', // Light Blue
+    '#00d2d3', // Turquoise
+    '#ff6348', // Orange
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -77,7 +130,37 @@ export class HabitDetailPage implements OnInit {
     private habitService: HabitService,
     private notificationService: NotificationService,
   ) {
-    addIcons({ saveOutline, trashOutline, closeOutline, notificationsOutline, timeOutline });
+    addIcons({
+      saveOutline,
+      trashOutline,
+      closeOutline,
+      notificationsOutline,
+      timeOutline,
+      barbell,
+      book,
+      water,
+      bed,
+      restaurant,
+      fitness,
+      leaf,
+      moon,
+      sunny,
+      walk,
+      bicycle,
+      medkit,
+      brush,
+      musicalNotes,
+      heart,
+      checkmarkCircle,
+    });
+  }
+
+  selectIcon(iconName: string) {
+    this.habit.icon = iconName;
+  }
+
+  selectColor(color: string) {
+    this.habit.color = color;
   }
 
   async ngOnInit() {
@@ -86,6 +169,7 @@ export class HabitDetailPage implements OnInit {
     if (this.habitId) {
       this.isNewHabit = false;
       await this.loadHabit();
+      await this.loadCompletions();
     }
   }
 
@@ -96,11 +180,44 @@ export class HabitDetailPage implements OnInit {
       next: (habit: Habit | undefined) => {
         if (habit) {
           this.habit = { ...habit };
+          this.loadCompletions();
         }
       },
       error: (error: any) => {
         console.error('Error loading habit:', error);
         this.showToast('Error loading habit');
+      },
+    });
+  }
+
+  async loadCompletions() {
+    if (!this.habitId) return;
+
+    this.habitService.getHabitStatistics(this.habitId).subscribe({
+      next: async (stats) => {
+        // Get completions from storage
+        const storageService = (this.habitService as any).storageService;
+        const completions = await storageService.getHabitCompletions(this.habitId);
+
+        // Sort by date (newest first) and format
+        this.completions = completions
+          .sort((a: HabitCompletion, b: HabitCompletion) =>
+            new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime()
+          )
+          .slice(0, 10) // Show last 10
+          .map((c: HabitCompletion) => ({
+            ...c,
+            formattedDate: new Date(c.completed_at).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+          }));
+      },
+      error: (error) => {
+        console.error('Error loading completions:', error);
       },
     });
   }

@@ -6,6 +6,8 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonRefresher,
+  IonRefresherContent,
   IonTitle,
   IonToggle,
   IonToolbar,
@@ -34,6 +36,8 @@ import { ThemeService } from 'src/app/services/theme.service';
     FormsModule,
     IonIcon,
     IonToggle,
+    IonRefresher,
+    IonRefresherContent,
   ],
 })
 export class SettingsPage implements OnInit {
@@ -68,5 +72,12 @@ export class SettingsPage implements OnInit {
   restartOnboarding() {
     localStorage.removeItem('hasCompletedOnboarding');
     this.router.navigate(['/welcome']);
+  }
+
+  async handleRefresh(event: any) {
+    await this.loadThemePreference();
+    setTimeout(() => {
+      event.target.complete();
+    }, 500);
   }
 }

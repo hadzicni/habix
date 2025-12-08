@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
   IonAlert,
   IonCheckbox,
@@ -9,6 +10,12 @@ import {
   IonFabButton,
   IonHeader,
   IonIcon,
+  IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonRefresher,
+  IonRefresherContent,
   IonTitle,
   IonToast,
   IonToolbar,
@@ -21,9 +28,11 @@ import {
   ellipsisVertical,
   flame,
   timeOutline,
+  trash,
 } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Habit } from 'src/app/interfaces/habit.interface';
+import { ConfettiService } from 'src/app/services/confetti.service';
 import { HabitService } from 'src/app/services/habit.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -43,6 +52,12 @@ import { NotificationService } from 'src/app/services/notification.service';
     IonFab,
     IonFabButton,
     IonAlert,
+    IonItemSliding,
+    IonItem,
+    IonItemOptions,
+    IonItemOption,
+    IonRefresher,
+    IonRefresherContent,
   ],
 })
 export class TodayPage implements OnInit {
@@ -51,6 +66,29 @@ export class TodayPage implements OnInit {
   isToastOpen = false;
   toastMessage = '';
   userName: string = '';
+
+  // Note dialog state
+  isNoteAlertOpen = false;
+  selectedHabit: (Habit & { completedToday: boolean }) | null = null;
+  noteAlertInputs = [
+    {
+      name: 'note',
+      type: 'textarea' as const,
+      placeholder: 'Add a note (optional)...',
+    },
+  ];
+  noteAlertButtons = [
+    {
+      text: 'Skip',
+      role: 'cancel',
+      handler: () => this.completeHabitWithoutNote(),
+    },
+    {
+      text: 'Save',
+      role: 'confirm',
+      handler: (data: any) => this.completeHabitWithNote(data.note),
+    },
+  ];
 
   newHabit = {
     title: '',
@@ -95,9 +133,10 @@ export class TodayPage implements OnInit {
   constructor(
     private habitService: HabitService,
     private notificationService: NotificationService,
+    private confettiService: ConfettiService,
     private router: Router,
   ) {
-    addIcons({ add, checkmarkCircle, ellipsisVertical, flame, timeOutline, checkboxOutline });
+    addIcons({ add, checkmarkCircle, ellipsisVertical, flame, timeOutline, checkboxOutline, trash });
     this.todaysHabits$ = this.habitService.getTodaysHabits();
   }
 
@@ -107,19 +146,50 @@ export class TodayPage implements OnInit {
 
   async toggleHabitCompletion(habit: Habit & { completedToday: boolean }, event: any) {
     if (event.detail.checked && !habit.completedToday) {
-      // Complete the habit
-      this.habitService.completeHabit(habit.id!).subscribe({
-        next: () => {
-          this.showToast(`${habit.title} completed! 🎉`);
-          // Check for streak achievements
-          this.checkStreakAchievement(habit);
-        },
-        error: (error) => {
-          console.error('Error completing habit:', error);
-          this.showToast('Error completing habit. Please try again.');
-        },
-      });
+      // Store the selected habit and show note dialog
+      this.selectedHabit = habit;
+      this.isNoteAlertOpen = true;
     }
+  }
+
+  private completeHabitWithNote(note?: string) {
+    if (!this.selectedHabit) return;
+    
+    // Haptic feedback
+    Haptics.impact({ style: ImpactStyle.Medium });
+    
+    this.habitService.completeHabit(this.selectedHabit.id!, note).subscribe({
+      next: async () => {
+        this.showToast(`${this.selectedHabit!.title} completed! 🎉`);
+        
+        // Show confetti for every completion
+        this.confettiService.createConfetti(4000);
+        Haptics.impact({ style: ImpactStyle.Heavy });
+        
+        // Get updated stats for notifications
+        const stats = await this.habitService.getHabitStatistics(this.selectedHabit!.id!).toPromise();
+        
+        if (stats) {
+          // Schedule encouragement notification for milestones
+          if ([1, 3, 7, 14, 30, 50, 100].includes(stats.current_streak)) {
+            await this.notificationService.scheduleEncouragementNotification(
+              this.selectedHabit!.title,
+              stats.current_streak,
+            );
+          }
+        }
+        
+        this.selectedHabit = null;
+      },
+      error: (error) => {
+        console.error('Error completing habit:', error);
+        this.showToast('Error completing habit. Please try again.');
+        this.selectedHabit = null;
+      },
+    });
+  }  private completeHabitWithoutNote() {
+    if (!this.selectedHabit) return;
+    this.completeHabitWithNote();
   }
 
   private async checkStreakAchievement(habit: Habit) {
@@ -138,6 +208,24 @@ export class TodayPage implements OnInit {
 
   editHabit(habitId: string) {
     this.router.navigate(['/tabs/habit-detail', habitId]);
+  }
+
+  async deleteHabit(habitId: string, slidingItem: any) {
+    // Close the sliding item
+    await slidingItem.close();
+
+    // Haptic feedback
+    Haptics.impact({ style: ImpactStyle.Medium });
+
+    this.habitService.deleteHabit(habitId).subscribe({
+      next: () => {
+        this.showToast('Habit deleted');
+      },
+      error: (error) => {
+        console.error('Error deleting habit:', error);
+        this.showToast('Error deleting habit. Please try again.');
+      },
+    });
   }
 
   async onAddHabitConfirm() {
@@ -242,5 +330,16 @@ export class TodayPage implements OnInit {
     const percentage = this.getProgressPercentage(habits);
     const circumference = this.getCircumference();
     return circumference - (percentage / 100) * circumference;
+  }
+
+  async handleRefresh(event: any) {
+    // Reload habits
+    this.todaysHabits$ = this.habitService.getTodaysHabits();
+
+    // Wait a bit for the data to load
+    setTimeout(() => {
+      event.target.complete();
+      this.showToast('Habits refreshed');
+    }, 1000);
   }
 }

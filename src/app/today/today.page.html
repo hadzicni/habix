@@ -11,6 +11,11 @@
     </ion-toolbar>
   </ion-header>
 
+  <!-- Pull to Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="content-wrapper">
     <!-- Greeting Header -->
     <div class="greeting-header">
@@ -68,43 +73,60 @@
       </div>
 
       @for (habit of todaysHabits$ | async; track habit.id) {
-      <div
-        class="habit-card"
-        [class.completed]="habit.completedToday"
-        (click)="habit.completedToday ? null : editHabit(habit.id!)"
-      >
-        <div class="habit-checkbox">
-          <ion-checkbox
-            [checked]="habit.completedToday"
-            [disabled]="habit.completedToday"
-            (ionChange)="toggleHabitCompletion(habit, $event)"
-            (click)="$event.stopPropagation()"
-          ></ion-checkbox>
-        </div>
+      <ion-item-sliding #slidingItem>
+        <ion-item lines="none" class="sliding-item">
+          <div
+            class="habit-card"
+            [class.completed]="habit.completedToday"
+            (click)="habit.completedToday ? null : editHabit(habit.id!)"
+          >
+            <!-- Habit Icon with Color -->
+            @if (habit.icon) {
+            <div class="habit-icon" [style.background]="habit.color || '#667eea'">
+              <ion-icon [name]="habit.icon"></ion-icon>
+            </div>
+            }
+            
+            <div class="habit-checkbox">
+              <ion-checkbox
+                [checked]="habit.completedToday"
+                [disabled]="habit.completedToday"
+                (ionChange)="toggleHabitCompletion(habit, $event)"
+                (click)="$event.stopPropagation()"
+              ></ion-checkbox>
+            </div>
 
-        <div class="habit-content">
-          <div class="habit-title">{{ habit.title }}</div>
-          <div class="habit-meta">
-            @if (habit.streak_count > 0) {
-            <span class="habit-streak">
-              <ion-icon name="flame"></ion-icon>
-              {{ habit.streak_count }} days
-            </span>
-            } @if (habit.reminder_time) {
-            <span class="habit-time">
-              <ion-icon name="time-outline"></ion-icon>
-              {{ habit.reminder_time }}
-            </span>
+            <div class="habit-content">
+              <div class="habit-title">{{ habit.title }}</div>
+              <div class="habit-meta">
+                @if (habit.streak_count > 0) {
+                <span class="habit-streak">
+                  <ion-icon name="flame"></ion-icon>
+                  {{ habit.streak_count }} days
+                </span>
+                } @if (habit.reminder_time) {
+                <span class="habit-time">
+                  <ion-icon name="time-outline"></ion-icon>
+                  {{ habit.reminder_time }}
+                </span>
+                }
+              </div>
+            </div>
+
+            @if (habit.completedToday) {
+            <div class="habit-status">
+              <ion-icon name="checkmark-circle" color="success"></ion-icon>
+            </div>
             }
           </div>
-        </div>
+        </ion-item>
 
-        @if (habit.completedToday) {
-        <div class="habit-status">
-          <ion-icon name="checkmark-circle" color="success"></ion-icon>
-        </div>
-        }
-      </div>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="deleteHabit(habit.id!, slidingItem)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
       }
 
       <!-- Empty State -->
@@ -133,6 +155,16 @@
     header="New Habit"
     [inputs]="alertInputs"
     [buttons]="alertButtons"
+  ></ion-alert>
+
+  <!-- Note Alert -->
+  <ion-alert
+    [isOpen]="isNoteAlertOpen"
+    header="Add Note"
+    message="Would you like to add a note for this completion?"
+    [inputs]="noteAlertInputs"
+    [buttons]="noteAlertButtons"
+    (didDismiss)="isNoteAlertOpen = false"
   ></ion-alert>
 
   <!-- Toast for notifications -->

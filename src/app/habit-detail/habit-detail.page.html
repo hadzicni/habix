@@ -36,6 +36,41 @@
         ></ion-textarea>
       </ion-item>
 
+      <!-- Icon Selection -->
+      <ion-item>
+        <ion-label position="stacked">Icon</ion-label>
+        <div class="icon-grid">
+          @for (iconOption of availableIcons; track iconOption.name) {
+          <div
+            class="icon-option"
+            [class.selected]="habit.icon === iconOption.name"
+            (click)="selectIcon(iconOption.name)"
+          >
+            <ion-icon [name]="iconOption.name"></ion-icon>
+          </div>
+          }
+        </div>
+      </ion-item>
+
+      <!-- Color Selection -->
+      <ion-item>
+        <ion-label position="stacked">Color</ion-label>
+        <div class="color-grid">
+          @for (colorOption of availableColors; track colorOption) {
+          <div
+            class="color-option"
+            [style.background]="colorOption"
+            [class.selected]="habit.color === colorOption"
+            (click)="selectColor(colorOption)"
+          >
+            @if (habit.color === colorOption) {
+            <ion-icon name="checkmark-circle"></ion-icon>
+            }
+          </div>
+          }
+        </div>
+      </ion-item>
+
       <!-- Enable Reminder -->
       <ion-item>
         <ion-icon name="notifications-outline" slot="start"></ion-icon>
@@ -58,6 +93,26 @@
         <ion-toggle [(ngModel)]="habit.is_active"></ion-toggle>
       </ion-item>
     </ion-list>
+
+    <!-- Completion History (only for existing habits) -->
+    @if (!isNewHabit && completions.length > 0) {
+    <div class="history-section">
+      <h3>Recent Completions</h3>
+      <div class="completion-list">
+        @for (completion of completions; track completion.id) {
+        <div class="completion-item">
+          <div class="completion-date">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            {{ completion.formattedDate }}
+          </div>
+          @if (completion.notes) {
+          <div class="completion-note">{{ completion.notes }}</div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    }
 
     <!-- Action Buttons -->
     <div class="action-buttons">

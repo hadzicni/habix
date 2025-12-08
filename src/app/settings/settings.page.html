@@ -11,6 +11,11 @@
     </ion-toolbar>
   </ion-header>
 
+  <!-- Pull to Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="content-wrapper">
     <!-- Theme Section -->
     <div class="settings-section">
