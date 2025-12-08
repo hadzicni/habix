@@ -20,11 +20,13 @@ export const routes: Routes = [
       },
       {
         path: 'habit-detail',
-        loadComponent: () => import('../habit-detail/habit-detail.page').then((m) => m.HabitDetailPage),
+        loadComponent: () =>
+          import('../habit-detail/habit-detail.page').then((m) => m.HabitDetailPage),
       },
       {
         path: 'habit-detail/:id',
-        loadComponent: () => import('../habit-detail/habit-detail.page').then((m) => m.HabitDetailPage),
+        loadComponent: () =>
+          import('../habit-detail/habit-detail.page').then((m) => m.HabitDetailPage),
       },
       {
         path: '',

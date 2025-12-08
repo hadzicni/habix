@@ -19,7 +19,7 @@ import { StorageService } from './storage.service';
 export class HabitService {
   private supabase: SupabaseClient = createClient(
     environment.supabase.url,
-    environment.supabase.anonKey
+    environment.supabase.anonKey,
   );
 
   private storageService = inject(StorageService);
@@ -49,9 +49,7 @@ export class HabitService {
     }
   }
 
-  createHabit(
-    habit: Omit<Habit, 'id' | 'created_at' | 'updated_at'>
-  ): Observable<Habit> {
+  createHabit(habit: Omit<Habit, 'id' | 'created_at' | 'updated_at'>): Observable<Habit> {
     const newHabit: Habit = {
       ...habit,
       id: crypto.randomUUID(),
@@ -84,7 +82,7 @@ export class HabitService {
         const currentHabits = this.habitsSubject.value;
         this.habitsSubject.next([...currentHabits, habit]);
         this.storageService.saveHabits([...currentHabits, habit]);
-      })
+      }),
     );
   }
 
@@ -114,12 +112,10 @@ export class HabitService {
       }),
       tap((habit) => {
         const currentHabits = this.habitsSubject.value;
-        const updatedHabits = currentHabits.map((h) =>
-          h.id === id ? { ...h, ...habit } : h
-        );
+        const updatedHabits = currentHabits.map((h) => (h.id === id ? { ...h, ...habit } : h));
         this.habitsSubject.next(updatedHabits);
         this.storageService.saveHabits(updatedHabits);
-      })
+      }),
     );
   }
 
@@ -128,10 +124,7 @@ export class HabitService {
       switchMap(async (isOnline) => {
         if (isOnline) {
           try {
-            const { error } = await this.supabase
-              .from('habits')
-              .delete()
-              .eq('id', id);
+            const { error } = await this.supabase.from('habits').delete().eq('id', id);
 
             if (error) throw error;
             return true;
@@ -148,14 +141,12 @@ export class HabitService {
         const updatedHabits = currentHabits.filter((h) => h.id !== id);
         this.habitsSubject.next(updatedHabits);
         this.storageService.saveHabits(updatedHabits);
-      })
+      }),
     );
   }
 
   getHabit(id: string): Observable<Habit | undefined> {
-    return this.habits$.pipe(
-      map((habits) => habits.find((h) => h.id === id))
-    );
+    return this.habits$.pipe(map((habits) => habits.find((h) => h.id === id)));
   }
 
   completeHabit(habitId: string, notes?: string): Observable<HabitCompletion> {
@@ -191,13 +182,13 @@ export class HabitService {
         this.updateHabitStreak(habitId);
         // Store completion locally
         this.storageService.saveHabitCompletion(completion);
-      })
+      }),
     );
   }
 
   getHabitStatistics(habitId: string): Observable<HabitStatistics> {
     return from(this.storageService.getHabitCompletions(habitId)).pipe(
-      map((completions) => this.calculateStatistics(habitId, completions))
+      map((completions) => this.calculateStatistics(habitId, completions)),
     );
   }
 
@@ -208,16 +199,14 @@ export class HabitService {
       switchMap((habits) =>
         Promise.all(
           habits.map(async (habit) => {
-            const completions = await this.storageService.getHabitCompletions(
-              habit.id!
-            );
+            const completions = await this.storageService.getHabitCompletions(habit.id!);
             const completedToday = completions.some(
-              (c) => new Date(c.completed_at).toDateString() === today
+              (c) => new Date(c.completed_at).toDateString() === today,
             );
             return { ...habit, completedToday };
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
   }
 
@@ -244,9 +233,7 @@ export class HabitService {
 
   private async updateHabitStreak(habitId: string) {
     try {
-      const completions = await this.storageService.getHabitCompletions(
-        habitId
-      );
+      const completions = await this.storageService.getHabitCompletions(habitId);
       const streak = this.calculateStreak(completions);
 
       this.updateHabit(habitId, { streak_count: streak }).subscribe({
@@ -257,10 +244,7 @@ export class HabitService {
     }
   }
 
-  private calculateStatistics(
-    habitId: string,
-    completions: HabitCompletion[]
-  ): HabitStatistics {
+  private calculateStatistics(habitId: string, completions: HabitCompletion[]): HabitStatistics {
     const totalCompletions = completions.length;
     const streak = this.calculateStreak(completions);
     const longestStreak = this.calculateLongestStreak(completions);
@@ -319,7 +303,7 @@ export class HabitService {
       const currentDate = new Date(sortedDates[i]);
       const previousDate = new Date(sortedDates[i - 1]);
       const dayDifference = Math.floor(
-        (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
+        (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24),
       );
 
       if (dayDifference === 1) {
@@ -333,16 +317,12 @@ export class HabitService {
     return Math.max(longestStreak, currentStreak);
   }
 
-  private calculateWeeklyData(
-    completions: HabitCompletion[]
-  ): WeeklyCompletions[] {
+  private calculateWeeklyData(completions: HabitCompletion[]): WeeklyCompletions[] {
     // Simplified implementation - return empty for now
     return [];
   }
 
-  private calculateMonthlyData(
-    completions: HabitCompletion[]
-  ): MonthlyCompletions[] {
+  private calculateMonthlyData(completions: HabitCompletion[]): MonthlyCompletions[] {
     // Simplified implementation - return empty for now
     return [];
   }

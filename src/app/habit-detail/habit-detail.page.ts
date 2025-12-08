@@ -15,17 +15,17 @@ import {
   IonList,
   IonTextarea,
   IonTitle,
+  IonToast,
   IonToggle,
   IonToolbar,
-  IonToast,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  saveOutline,
-  trashOutline,
   closeOutline,
   notificationsOutline,
+  saveOutline,
   timeOutline,
+  trashOutline,
 } from 'ionicons/icons';
 import { Habit } from '../interfaces/habit.interface';
 import { HabitService } from '../services/habit.service';
@@ -75,14 +75,14 @@ export class HabitDetailPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private habitService: HabitService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {
     addIcons({ saveOutline, trashOutline, closeOutline, notificationsOutline, timeOutline });
   }
 
   async ngOnInit() {
     this.habitId = this.route.snapshot.paramMap.get('id');
-    
+
     if (this.habitId) {
       this.isNewHabit = false;
       await this.loadHabit();
