@@ -213,7 +213,7 @@ export class TodayPage implements OnInit {
   getGreeting(): string {
     const hour = new Date().getHours();
     let greeting = 'Hello';
-    
+
     if (hour < 12) {
       greeting = 'Good Morning';
     } else if (hour < 18) {
@@ -221,7 +221,7 @@ export class TodayPage implements OnInit {
     } else {
       greeting = 'Good Evening';
     }
-    
+
     return this.userName ? `${greeting}, ${this.userName}!` : `${greeting}!`;
   }
 

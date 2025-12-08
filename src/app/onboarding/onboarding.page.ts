@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonButton, IonContent, IonIcon, IonInput, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon, IonInput, IonItem } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   arrowForwardOutline,
