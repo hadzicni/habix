@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Habit Tracker</string>
-    <string name="title_activity_main">Habit Tracker</string>
-    <string name="package_name">com.hadzicni.habittracker</string>
-    <string name="custom_url_scheme">com.hadzicni.habittrackerr</string>
+    <string name="app_name">Habitify</string>
+    <string name="title_activity_main">Habitify</string>
+    <string name="package_name">com.hadzicni.habitify</string>
+    <string name="custom_url_scheme">com.hadzicni.habitifyr</string>
 </resources>

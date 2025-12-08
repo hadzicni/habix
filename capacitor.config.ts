@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.habittracker.app',
-  appName: 'Habit Tracker',
+  appId: 'com.habitify.app',
+  appName: 'Habitify',
   webDir: 'www',
 };
 
