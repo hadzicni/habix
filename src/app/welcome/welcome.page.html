@@ -1,0 +1,46 @@
+<ion-content [fullscreen]="true" class="welcome-content">
+  <div class="welcome-container">
+    <div class="logo-section">
+      <div class="logo-circle">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </div>
+      <h1>Habit Tracker</h1>
+      <p class="tagline">Build better habits, one day at a time</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </div>
+        <h3>Track Daily</h3>
+        <p>Mark habits complete every day</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <ion-icon name="trending-up-outline"></ion-icon>
+        </div>
+        <h3>Build Streaks</h3>
+        <p>Stay motivated with streak tracking</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">
+          <ion-icon name="rocket-outline"></ion-icon>
+        </div>
+        <h3>Get Reminders</h3>
+        <p>Never miss a habit with notifications</p>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <ion-button expand="block" (click)="startOnboarding()" class="primary-button">
+        Get Started
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="skipToApp()" class="skip-button">
+        Skip
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

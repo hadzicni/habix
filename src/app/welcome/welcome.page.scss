@@ -1,0 +1,153 @@
+.welcome-content {
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+  color: white;
+}
+
+.logo-section {
+  text-align: center;
+  padding-top: 3rem;
+  animation: fadeInDown 0.8s ease-out;
+
+  .logo-circle {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+
+    ion-icon {
+      font-size: 64px;
+      color: white;
+    }
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+    color: white;
+    letter-spacing: -0.5px;
+  }
+
+  .tagline {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 300;
+    margin: 0;
+  }
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      ion-icon {
+        font-size: 28px;
+        color: white;
+      }
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem;
+      color: white;
+    }
+
+    p {
+      font-size: 0.9rem;
+      margin: 0;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+  }
+}
+
+.action-buttons {
+  padding-bottom: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+
+  .primary-button {
+    --background: white;
+    --color: #667eea;
+    --border-radius: 14px;
+    --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    font-size: 1.1rem;
+    height: 56px;
+    margin-bottom: 0.75rem;
+    text-transform: none;
+  }
+
+  .skip-button {
+    --color: white;
+    font-weight: 500;
+    text-transform: none;
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark mode adjustments
+body.dark {
+  .welcome-content {
+    --background: linear-gradient(135deg, #4a5dab 0%, #5a3d7a 100%);
+  }
+}

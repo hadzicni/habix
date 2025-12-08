@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -11,10 +12,12 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  chevronForwardOutline,
   codeSlashOutline,
   informationCircleOutline,
   moonOutline,
   notificationsOutline,
+  reloadOutline,
 } from 'ionicons/icons';
 import { ThemeService } from 'src/app/services/theme.service';
 
@@ -36,8 +39,18 @@ import { ThemeService } from 'src/app/services/theme.service';
 export class SettingsPage implements OnInit {
   darkMode: boolean = false;
 
-  constructor(private themeService: ThemeService) {
-    addIcons({ moonOutline, notificationsOutline, informationCircleOutline, codeSlashOutline });
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+  ) {
+    addIcons({
+      moonOutline,
+      notificationsOutline,
+      informationCircleOutline,
+      codeSlashOutline,
+      reloadOutline,
+      chevronForwardOutline,
+    });
   }
 
   async ngOnInit() {
@@ -49,7 +62,11 @@ export class SettingsPage implements OnInit {
   }
 
   toggleDarkMode(event: any) {
-    this.darkMode = event.detail.checked;
-    this.themeService.setDarkMode(this.darkMode);
+    this.themeService.setDarkMode(event.detail.checked);
+  }
+
+  restartOnboarding() {
+    localStorage.removeItem('hasCompletedOnboarding');
+    this.router.navigate(['/welcome']);
   }
 }

@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true" class="onboarding-content">
+  <div class="onboarding-container">
+    <!-- Skip Button -->
+    <div class="skip-section">
+      <ion-button fill="clear" (click)="skip()" class="skip-button"> Skip </ion-button>
+    </div>
+
+    <!-- Swiper Container -->
+    <swiper-container
+      #swiper
+      [pagination]="true"
+      [effect]="'fade'"
+      [speed]="500"
+      class="onboarding-swiper"
+    >
+      <swiper-slide *ngFor="let slide of slides">
+        <div class="slide-content" [style.--slide-color]="slide.color">
+          <div class="slide-icon">
+            <ion-icon [name]="slide.icon"></ion-icon>
+          </div>
+          <h2>{{ slide.title }}</h2>
+          <p>{{ slide.description }}</p>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-buttons">
+      <ion-button *ngIf="!isLastSlide" expand="block" (click)="nextSlide()" class="next-button">
+        Next
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        *ngIf="isLastSlide"
+        expand="block"
+        (click)="finishOnboarding()"
+        class="finish-button"
+      >
+        Get Started
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

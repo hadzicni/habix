@@ -1,0 +1,159 @@
+.onboarding-content {
+  --background: var(--ion-background-color);
+}
+
+.onboarding-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.skip-section {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 0;
+  z-index: 10;
+
+  .skip-button {
+    --color: var(--ion-color-medium);
+    font-weight: 500;
+    text-transform: none;
+  }
+}
+
+.onboarding-swiper {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+
+  swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+}
+
+.slide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 500px;
+  animation: fadeIn 0.6s ease-out;
+
+  .slide-icon {
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(135deg, var(--slide-color), var(--slide-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: scaleIn 0.6s ease-out 0.2s both;
+
+    ion-icon {
+      font-size: 72px;
+      color: white;
+    }
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--ion-text-color);
+    letter-spacing: -0.5px;
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--ion-color-medium);
+    margin: 0;
+    padding: 0 1rem;
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+  }
+}
+
+.navigation-buttons {
+  padding: 1rem 0 2rem;
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+
+  .next-button,
+  .finish-button {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --border-radius: 14px;
+    --box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    font-weight: 600;
+    font-size: 1.1rem;
+    height: 56px;
+    text-transform: none;
+  }
+
+  .finish-button {
+    --background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --box-shadow: 0 4px 16px rgba(67, 233, 123, 0.3);
+  }
+}
+
+// Swiper pagination customization
+::ng-deep {
+  .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    background: var(--ion-color-medium);
+    opacity: 0.4;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 1;
+    width: 24px;
+    border-radius: 4px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Dark mode adjustments
+body.dark {
+  .slide-content {
+    .slide-icon {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
