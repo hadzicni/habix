@@ -44,11 +44,13 @@
       </ion-item>
 
       <!-- Reminder Time -->
-      <ion-item *ngIf="habit.reminder_enabled">
-        <ion-icon name="time-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Reminder Time</ion-label>
-        <ion-input type="time" [(ngModel)]="habit.reminder_time" placeholder="HH:MM"></ion-input>
-      </ion-item>
+      @if (habit.reminder_enabled) {
+        <ion-item>
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label position="stacked">Reminder Time</ion-label>
+          <ion-input type="time" [(ngModel)]="habit.reminder_time" placeholder="HH:MM"></ion-input>
+        </ion-item>
+      }
 
       <!-- Active Status -->
       <ion-item>
@@ -64,17 +66,18 @@
         {{ isNewHabit ? 'Create' : 'Save' }}
       </ion-button>
 
-      <ion-button
-        *ngIf="!isNewHabit"
-        expand="block"
-        color="danger"
-        fill="outline"
-        (click)="deleteHabit()"
-        class="delete-button"
-      >
-        <ion-icon slot="start" name="trash-outline"></ion-icon>
-        Delete
-      </ion-button>
+      @if (!isNewHabit) {
+        <ion-button
+          expand="block"
+          color="danger"
+          fill="outline"
+          (click)="deleteHabit()"
+          class="delete-button"
+        >
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      }
     </div>
   </div>
 

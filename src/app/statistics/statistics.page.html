@@ -13,47 +13,49 @@
 
   <div class="content-wrapper">
     <!-- Overall Stats Cards -->
-    <div class="stats-overview" *ngIf="overallStats$ | async as stats">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <ion-icon name="checkmark-circle"></ion-icon>
+    @if (overallStats$ | async; as stats) {
+      <div class="stats-overview">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.totalHabits }}</div>
+            <div class="stat-label">Habits</div>
+          </div>
         </div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.totalHabits }}</div>
-          <div class="stat-label">Habits</div>
-        </div>
-      </div>
 
-      <div class="stat-card">
-        <div class="stat-icon flame">
-          <ion-icon name="flame"></ion-icon>
+        <div class="stat-card">
+          <div class="stat-icon flame">
+            <ion-icon name="flame"></ion-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.activeStreaks }}</div>
+            <div class="stat-label">Active Streaks</div>
+          </div>
         </div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.activeStreaks }}</div>
-          <div class="stat-label">Active Streaks</div>
-        </div>
-      </div>
 
-      <div class="stat-card">
-        <div class="stat-icon trophy">
-          <ion-icon name="trophy"></ion-icon>
+        <div class="stat-card">
+          <div class="stat-icon trophy">
+            <ion-icon name="trophy"></ion-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.longestStreak }}</div>
+            <div class="stat-label">Longest Streak</div>
+          </div>
         </div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.longestStreak }}</div>
-          <div class="stat-label">Longest Streak</div>
-        </div>
-      </div>
 
-      <div class="stat-card">
-        <div class="stat-icon">
-          <ion-icon name="trending-up"></ion-icon>
-        </div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.totalCompletions }}</div>
-          <div class="stat-label">Total Completed</div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <ion-icon name="trending-up"></ion-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.totalCompletions }}</div>
+            <div class="stat-label">Total Completed</div>
+          </div>
         </div>
       </div>
-    </div>
+    }
 
     <!-- Individual Habit Stats -->
     <div class="habits-stats-section">
@@ -61,43 +63,47 @@
         <h3>Your Habits</h3>
       </div>
 
-      <div class="habit-stat-card" *ngFor="let habitWithStats of habitsWithStats$ | async">
-        <div class="habit-stat-header">
-          <h4>{{ habitWithStats.habit.title }}</h4>
-          <div class="streak-badge" [class.active]="habitWithStats.stats.current_streak > 0">
-            <ion-icon name="flame"></ion-icon>
-            {{ habitWithStats.stats.current_streak }}
+      @for (habitWithStats of habitsWithStats$ | async; track habitWithStats.habit.id) {
+        <div class="habit-stat-card">
+          <div class="habit-stat-header">
+            <h4>{{ habitWithStats.habit.title }}</h4>
+            <div class="streak-badge" [class.active]="habitWithStats.stats.current_streak > 0">
+              <ion-icon name="flame"></ion-icon>
+              {{ habitWithStats.stats.current_streak }}
+            </div>
           </div>
-        </div>
 
-        <div class="habit-stat-grid">
-          <div class="stat-item">
-            <div class="stat-item-value">{{ habitWithStats.stats.current_streak }}</div>
-            <div class="stat-item-label">Current Streak</div>
+          <div class="habit-stat-grid">
+            <div class="stat-item">
+              <div class="stat-item-value">{{ habitWithStats.stats.current_streak }}</div>
+              <div class="stat-item-label">Current Streak</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-item-value">{{ habitWithStats.stats.longest_streak }}</div>
+              <div class="stat-item-label">Longest Streak</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-item-value">{{ habitWithStats.stats.total_completions }}</div>
+              <div class="stat-item-label">Total</div>
+            </div>
           </div>
-          <div class="stat-item">
-            <div class="stat-item-value">{{ habitWithStats.stats.longest_streak }}</div>
-            <div class="stat-item-label">Longest Streak</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-item-value">{{ habitWithStats.stats.total_completions }}</div>
-            <div class="stat-item-label">Total</div>
-          </div>
-        </div>
 
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="getCompletionRate(habitWithStats)"></div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getCompletionRate(habitWithStats)"></div>
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Empty State -->
-      <div class="empty-state" *ngIf="(habitsWithStats$ | async)?.length === 0">
-        <div class="empty-icon">
-          <ion-icon name="stats-chart-outline"></ion-icon>
+      @if ((habitsWithStats$ | async)?.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+          </div>
+          <h3>No statistics yet</h3>
+          <p>Create habits and track your progress!</p>
         </div>
-        <h3>No statistics yet</h3>
-        <p>Create habits and track your progress!</p>
-      </div>
+      }
     </div>
   </div>
 </ion-content>
