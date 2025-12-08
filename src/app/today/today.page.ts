@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   IonAlert,
   IonCheckbox,
@@ -93,6 +94,7 @@ export class TodayPage implements OnInit {
   constructor(
     private habitService: HabitService,
     private notificationService: NotificationService,
+    private router: Router,
   ) {
     addIcons({ add, checkmarkCircle, ellipsisVertical, flame, timeOutline, checkboxOutline });
     this.todaysHabits$ = this.habitService.getTodaysHabits();
@@ -130,7 +132,11 @@ export class TodayPage implements OnInit {
   }
 
   openAddHabitAlert() {
-    this.isAlertOpen = true;
+    this.router.navigate(['/tabs/habit-detail']);
+  }
+
+  editHabit(habitId: string) {
+    this.router.navigate(['/tabs/habit-detail', habitId]);
   }
 
   async onAddHabitConfirm() {

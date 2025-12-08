@@ -63,12 +63,14 @@
         class="habit-card"
         *ngFor="let habit of todaysHabits$ | async"
         [class.completed]="habit.completedToday"
+        (click)="habit.completedToday ? null : editHabit(habit.id!)"
       >
         <div class="habit-checkbox">
           <ion-checkbox
             [checked]="habit.completedToday"
             [disabled]="habit.completedToday"
             (ionChange)="toggleHabitCompletion(habit, $event)"
+            (click)="$event.stopPropagation()"
           ></ion-checkbox>
         </div>
 

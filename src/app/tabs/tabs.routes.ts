@@ -19,6 +19,14 @@ export const routes: Routes = [
         loadComponent: () => import('../settings/settings.page').then((m) => m.SettingsPage),
       },
       {
+        path: 'habit-detail',
+        loadComponent: () => import('../habit-detail/habit-detail.page').then((m) => m.HabitDetailPage),
+      },
+      {
+        path: 'habit-detail/:id',
+        loadComponent: () => import('../habit-detail/habit-detail.page').then((m) => m.HabitDetailPage),
+      },
+      {
         path: '',
         redirectTo: '/tabs/today',
         pathMatch: 'full',

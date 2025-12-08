@@ -92,6 +92,7 @@
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   animation: fadeIn 0.3s ease-out;
+  cursor: pointer;
 
   &:active {
     transform: scale(0.98);
@@ -99,6 +100,7 @@
 
   &.completed {
     opacity: 0.7;
+    cursor: default;
 
     .habit-title {
       text-decoration: line-through;

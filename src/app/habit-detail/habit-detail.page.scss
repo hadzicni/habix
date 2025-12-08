@@ -1,0 +1,78 @@
+// Habit Detail Page Styles
+
+.content-wrapper {
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+ion-list {
+  background: transparent;
+  padding: 20px;
+}
+
+ion-item {
+  --background: var(--ion-color-light);
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+
+  ion-label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--ion-text-color);
+  }
+
+  ion-icon {
+    color: var(--ion-color-primary);
+    font-size: 24px;
+  }
+}
+
+ion-input,
+ion-textarea {
+  --padding-start: 0;
+  --padding-end: 0;
+  margin-top: 4px;
+}
+
+.action-buttons {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  ion-button {
+    --border-radius: 12px;
+    font-weight: 600;
+    margin: 0;
+    height: 48px;
+
+    &.save-button {
+      --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    &.delete-button {
+      --border-width: 2px;
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  ion-item {
+    --background: var(--ion-color-light);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+body.dark ion-item {
+  --background: var(--ion-color-light);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

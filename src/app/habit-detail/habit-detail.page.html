@@ -1,0 +1,93 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/today"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isNewHabit ? 'Neue Gewohnheit' : 'Gewohnheit bearbeiten' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content-wrapper">
+    <ion-list>
+      <!-- Titel -->
+      <ion-item>
+        <ion-label position="stacked">Titel *</ion-label>
+        <ion-input
+          [(ngModel)]="habit.title"
+          placeholder="z.B. Joggen, Lesen, Meditation"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <!-- Beschreibung -->
+      <ion-item>
+        <ion-label position="stacked">Beschreibung</ion-label>
+        <ion-textarea
+          [(ngModel)]="habit.description"
+          placeholder="Optional: Warum ist diese Gewohnheit wichtig?"
+          rows="3"
+          auto-grow="true"
+        ></ion-textarea>
+      </ion-item>
+
+      <!-- Erinnerung aktivieren -->
+      <ion-item>
+        <ion-icon name="notifications-outline" slot="start"></ion-icon>
+        <ion-label>Erinnerung aktivieren</ion-label>
+        <ion-toggle [(ngModel)]="habit.reminder_enabled"></ion-toggle>
+      </ion-item>
+
+      <!-- Erinnerungszeit -->
+      <ion-item *ngIf="habit.reminder_enabled">
+        <ion-icon name="time-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">Erinnerungszeit</ion-label>
+        <ion-input
+          type="time"
+          [(ngModel)]="habit.reminder_time"
+          placeholder="HH:MM"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Aktiv Status -->
+      <ion-item>
+        <ion-label>Gewohnheit aktiv</ion-label>
+        <ion-toggle [(ngModel)]="habit.is_active"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button expand="block" (click)="saveHabit()" class="save-button">
+        <ion-icon slot="start" name="save-outline"></ion-icon>
+        {{ isNewHabit ? 'Erstellen' : 'Speichern' }}
+      </ion-button>
+
+      <ion-button
+        *ngIf="!isNewHabit"
+        expand="block"
+        color="danger"
+        fill="outline"
+        (click)="deleteHabit()"
+        class="delete-button"
+      >
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Löschen
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    position="bottom"
+    (didDismiss)="isToastOpen = false"
+  ></ion-toast>
+</ion-content>

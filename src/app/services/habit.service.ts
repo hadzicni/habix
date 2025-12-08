@@ -152,6 +152,12 @@ export class HabitService {
     );
   }
 
+  getHabit(id: string): Observable<Habit | undefined> {
+    return this.habits$.pipe(
+      map((habits) => habits.find((h) => h.id === id))
+    );
+  }
+
   completeHabit(habitId: string, notes?: string): Observable<HabitCompletion> {
     const completion: HabitCompletion = {
       id: crypto.randomUUID(),
