@@ -1,17 +1,79 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-title> Tagesübersicht </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">{{ getTodayDate() }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div class="habit-list-container">
+    <ion-list>
+      <div *ngFor="let habit of todaysHabits$ | async">
+        <ion-item>
+          <ion-checkbox
+            slot="start"
+            [checked]="habit.completedToday"
+            [disabled]="habit.completedToday"
+            (ionChange)="toggleHabitCompletion(habit, $event)"
+          >
+          </ion-checkbox>
+          <ion-label>
+            <h2 [class.completed]="habit.completedToday">{{ habit.title }}</h2>
+            <p *ngIf="habit.description">{{ habit.description }}</p>
+            <p class="habit-info">
+              <span *ngIf="habit.reminder_enabled && habit.reminder_time">
+                🔔 {{ habit.reminder_time }}
+              </span>
+              <span class="streak">🔥 {{ habit.streak_count }} Tage</span>
+            </p>
+          </ion-label>
+          <ion-icon
+            name="checkmark-circle"
+            slot="end"
+            *ngIf="habit.completedToday"
+            color="success"
+          >
+          </ion-icon>
+        </ion-item>
+      </div>
+    </ion-list>
+
+    <div class="empty-state" *ngIf="(todaysHabits$ | async)?.length === 0">
+      <ion-icon name="add" size="large" color="medium"></ion-icon>
+      <h3>Keine Gewohnheiten gefunden</h3>
+      <p>Fügen Sie Ihre erste Gewohnheit hinzu, um zu beginnen!</p>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openAddHabitAlert()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Add Habit Alert -->
+  <ion-alert
+    [isOpen]="isAlertOpen"
+    header="Neue Gewohnheit"
+    message="Erstellen Sie eine neue Gewohnheit"
+    [inputs]="alertInputs"
+    [buttons]="alertButtons"
+  >
+  </ion-alert>
+
+  <!-- Toast for notifications -->
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="toastMessage"
+    [duration]="3000"
+    position="bottom"
+    (didDismiss)="isToastOpen = false"
+  >
+  </ion-toast>
 </ion-content>

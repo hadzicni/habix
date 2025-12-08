@@ -1,0 +1,56 @@
+.habit-list-container {
+  padding: 16px;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.habit-info {
+  display: flex;
+  gap: 12px;
+  font-size: 0.9em;
+  color: var(--ion-color-medium);
+
+  .streak {
+    font-weight: 500;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 16px 0 8px 0;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  --background: var(--ion-color-light);
+}
+
+ion-checkbox {
+  margin-right: 16px;
+}
+
+ion-fab-button {
+  --background: var(--ion-color-primary);
+  --color: white;
+}

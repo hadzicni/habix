@@ -1,13 +1,210 @@
-import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { Component, OnInit } from '@angular/core';
+import {
+  IonAlert,
+  IonCheckbox,
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonTitle,
+  IonToast,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import { HabitService } from 'src/app/services/habit.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { Habit } from 'src/app/interfaces/habit.interface';
+import { addIcons } from 'ionicons';
+import { add, checkmarkCircle, ellipsisVertical } from 'ionicons/icons';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent],
+  imports: [
+    IonToast,
+    IonItem,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    CommonModule,
+    IonList,
+    IonCheckbox,
+    IonLabel,
+    IonIcon,
+    IonFab,
+    IonFabButton,
+    IonAlert,
+  ],
 })
-export class Tab1Page {
-  constructor() {}
+export class Tab1Page implements OnInit {
+  todaysHabits$: Observable<(Habit & { completedToday: boolean })[]>;
+  isAlertOpen = false;
+  isToastOpen = false;
+  toastMessage = '';
+
+  newHabit = {
+    title: '',
+    description: '',
+    reminderEnabled: false,
+    reminder_time: '',
+    is_active: true,
+    streak_count: 0,
+  };
+
+  alertInputs = [
+    {
+      name: 'title',
+      type: 'text',
+      placeholder: 'Titel der Gewohnheit',
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      placeholder: 'Beschreibung (optional)',
+    },
+    {
+      name: 'reminderTime',
+      type: 'time',
+      placeholder: 'Erinnerungszeit (optional)',
+    },
+  ];
+
+  alertButtons = [
+    {
+      text: 'Abbrechen',
+      role: 'cancel',
+      handler: () => this.onAddHabitCancel(),
+    },
+    {
+      text: 'Erstellen',
+      role: 'confirm',
+      handler: (data: any) => this.handleAddHabit(data),
+    },
+  ];
+
+  constructor(
+    private habitService: HabitService,
+    private notificationService: NotificationService
+  ) {
+    addIcons({ add, checkmarkCircle, ellipsisVertical });
+    this.todaysHabits$ = this.habitService.getTodaysHabits();
+  }
+
+  ngOnInit() {
+    // Initialize habits
+  }
+
+  async toggleHabitCompletion(
+    habit: Habit & { completedToday: boolean },
+    event: any
+  ) {
+    if (event.detail.checked && !habit.completedToday) {
+      // Complete the habit
+      this.habitService.completeHabit(habit.id!).subscribe({
+        next: () => {
+          this.showToast(`${habit.title} completed! 🎉`);
+          // Check for streak achievements
+          this.checkStreakAchievement(habit);
+        },
+        error: (error) => {
+          console.error('Error completing habit:', error);
+          this.showToast('Error completing habit. Please try again.');
+        },
+      });
+    }
+  }
+
+  private async checkStreakAchievement(habit: Habit) {
+    const stats = await this.habitService
+      .getHabitStatistics(habit.id!)
+      .toPromise();
+    if (stats) {
+      await this.notificationService.scheduleEncouragementNotification(
+        habit.title,
+        stats.current_streak
+      );
+    }
+  }
+
+  openAddHabitAlert() {
+    this.isAlertOpen = true;
+  }
+
+  async onAddHabitConfirm() {
+    if (this.newHabit.title.trim()) {
+      // Map form data to Habit interface
+      const habitData: Omit<Habit, 'id' | 'created_at' | 'updated_at'> = {
+        title: this.newHabit.title,
+        description: this.newHabit.description,
+        icon: undefined,
+        color: undefined,
+        reminder_time: this.newHabit.reminder_time || undefined,
+        reminder_enabled: this.newHabit.reminderEnabled,
+        is_active: true,
+        streak_count: 0,
+      };
+
+      this.habitService.createHabit(habitData).subscribe({
+        next: (habit) => {
+          this.showToast(`${habit.title} created successfully!`);
+          // Reset form
+          this.newHabit = {
+            title: '',
+            description: '',
+            reminderEnabled: false,
+            reminder_time: '',
+            is_active: true,
+            streak_count: 0,
+          };
+        },
+        error: (error) => {
+          console.error('Error creating habit:', error);
+          this.showToast('Error creating habit. Please try again.');
+        },
+      });
+    }
+    this.isAlertOpen = false;
+  }
+
+  onAddHabitCancel() {
+    this.isAlertOpen = false;
+    this.newHabit = {
+      title: '',
+      description: '',
+      reminderEnabled: false,
+      reminder_time: '',
+      is_active: true,
+      streak_count: 0,
+    };
+  }
+
+  handleAddHabit(data: any) {
+    this.newHabit.title = data.title || '';
+    this.newHabit.description = data.description || '';
+    this.newHabit.reminder_time = data.reminderTime || '';
+    this.newHabit.reminderEnabled = !!data.reminderTime;
+    this.onAddHabitConfirm();
+  }
+
+  private showToast(message: string) {
+    this.toastMessage = message;
+    this.isToastOpen = true;
+  }
+
+  getTodayDate(): string {
+    return new Date().toLocaleDateString('de-DE', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
 }

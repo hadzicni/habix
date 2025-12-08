@@ -1,0 +1,201 @@
+.stats-container {
+  padding: 16px;
+}
+
+ion-segment {
+  margin-bottom: 16px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  ion-icon {
+    font-size: 2em;
+  }
+
+  div {
+    h3 {
+      margin: 0;
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 4px 0 0 0;
+      font-size: 0.9em;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.week-grid {
+  .week-header {
+    display: grid;
+    grid-template-columns: 1fr repeat(7, 30px);
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 0 8px;
+
+    .day-label {
+      font-size: 0.8em;
+      font-weight: 500;
+      text-align: center;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .week-progress {
+    display: grid;
+    grid-template-columns: 1fr repeat(7, 30px);
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--ion-color-light);
+
+    .habit-name {
+      font-size: 0.9em;
+      font-weight: 500;
+      padding-right: 8px;
+    }
+
+    .day-indicators {
+      display: contents;
+
+      .day-indicator {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--ion-color-medium);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.3;
+
+        &.completed {
+          background: var(--ion-color-success);
+          opacity: 1;
+
+          ion-icon {
+            color: white;
+            font-size: 1.1em;
+          }
+        }
+      }
+    }
+  }
+}
+
+.habit-stat {
+  text-align: center;
+
+  ion-icon {
+    font-size: 2em;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    margin: 8px 0 4px 0;
+    font-size: 1.3em;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.8em;
+    color: var(--ion-color-medium);
+  }
+}
+
+.week-progress-single {
+  margin-top: 16px;
+
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 1em;
+    font-weight: 500;
+  }
+
+  .week-display {
+    display: flex;
+    justify-content: space-between;
+
+    .day-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+
+      .day-label {
+        font-size: 0.8em;
+        font-weight: 500;
+        color: var(--ion-color-medium);
+      }
+
+      .day-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--ion-color-medium);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.3;
+
+        &.completed {
+          background: var(--ion-color-success);
+          opacity: 1;
+
+          ion-icon {
+            color: white;
+            font-size: 1.1em;
+          }
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 16px 0 8px 0;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+ion-card {
+  margin-bottom: 16px;
+  border-radius: 16px;
+
+  ion-card-header {
+    padding-bottom: 8px;
+  }
+}
+
+ion-grid {
+  padding: 0;
+}
+
+ion-row {
+  margin: 0;
+}
+
+ion-col {
+  padding: 8px;
+}
