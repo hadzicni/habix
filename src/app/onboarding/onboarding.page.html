@@ -14,48 +14,42 @@
       class="onboarding-swiper"
     >
       @for (slide of slides; track slide.title) {
-        <swiper-slide>
-          <div class="slide-content" [style.--slide-color]="slide.color">
-            <div class="slide-icon">
-              <ion-icon [name]="slide.icon"></ion-icon>
-            </div>
-            <h2>{{ slide.title }}</h2>
-            <p>{{ slide.description }}</p>
-
-            @if (slide.isNameInput) {
-              <div class="name-input-container">
-                <ion-item lines="none" class="name-input-item">
-                  <ion-input
-                    [(ngModel)]="userName"
-                    placeholder="Enter your name"
-                    type="text"
-                    class="name-input"
-                  ></ion-input>
-                </ion-item>
-              </div>
-            }
+      <swiper-slide>
+        <div class="slide-content" [style.--slide-color]="slide.color">
+          <div class="slide-icon">
+            <ion-icon [name]="slide.icon"></ion-icon>
           </div>
-        </swiper-slide>
+          <h2>{{ slide.title }}</h2>
+          <p>{{ slide.description }}</p>
+
+          @if (slide.isNameInput) {
+          <div class="name-input-container">
+            <ion-item lines="none" class="name-input-item">
+              <ion-input
+                [(ngModel)]="userName"
+                placeholder="Enter your name"
+                type="text"
+                class="name-input"
+              ></ion-input>
+            </ion-item>
+          </div>
+          }
+        </div>
+      </swiper-slide>
       }
     </swiper-container>
 
     <!-- Navigation Buttons -->
     <div class="navigation-buttons">
       @if (!isLastSlide) {
-        <ion-button expand="block" (click)="nextSlide()" class="next-button">
-          Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-        </ion-button>
-      }
-
-      @if (isLastSlide) {
-        <ion-button
-          expand="block"
-          (click)="finishOnboarding()"
-          class="finish-button"
-        >
-          Get Started
-        </ion-button>
+      <ion-button expand="block" (click)="nextSlide()" class="next-button">
+        Next
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+      } @if (isLastSlide) {
+      <ion-button expand="block" (click)="finishOnboarding()" class="finish-button">
+        Get Started
+      </ion-button>
       }
     </div>
   </div>

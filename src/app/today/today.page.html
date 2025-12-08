@@ -20,45 +20,45 @@
 
     <!-- Today's Progress Summary -->
     @if (todaysHabits$ | async; as habits) {
-      <div class="progress-card">
-        <div class="progress-header">
-          <div class="progress-title">
-            <h2>Today</h2>
-            <p>{{ getCompletedCount(habits) }} of {{ habits.length }} completed</p>
-          </div>
-          <div class="progress-circle">
-            <svg width="60" height="60">
-              <circle
-                cx="30"
-                cy="30"
-                r="26"
-                stroke="rgba(102, 126, 234, 0.1)"
-                stroke-width="4"
-                fill="none"
-              />
-              <circle
-                cx="30"
-                cy="30"
-                r="26"
-                stroke="url(#gradient)"
-                stroke-width="4"
-                fill="none"
-                [attr.stroke-dasharray]="getCircumference()"
-                [attr.stroke-dashoffset]="getProgress(habits)"
-                stroke-linecap="round"
-                transform="rotate(-90 30 30)"
-              />
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color: #667eea; stop-opacity: 1" />
-                  <stop offset="100%" style="stop-color: #764ba2; stop-opacity: 1" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <span class="progress-percentage">{{ getProgressPercentage(habits) }}%</span>
-          </div>
+    <div class="progress-card">
+      <div class="progress-header">
+        <div class="progress-title">
+          <h2>Today</h2>
+          <p>{{ getCompletedCount(habits) }} of {{ habits.length }} completed</p>
+        </div>
+        <div class="progress-circle">
+          <svg width="60" height="60">
+            <circle
+              cx="30"
+              cy="30"
+              r="26"
+              stroke="rgba(102, 126, 234, 0.1)"
+              stroke-width="4"
+              fill="none"
+            />
+            <circle
+              cx="30"
+              cy="30"
+              r="26"
+              stroke="url(#gradient)"
+              stroke-width="4"
+              fill="none"
+              [attr.stroke-dasharray]="getCircumference()"
+              [attr.stroke-dashoffset]="getProgress(habits)"
+              stroke-linecap="round"
+              transform="rotate(-90 30 30)"
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color: #667eea; stop-opacity: 1" />
+                <stop offset="100%" style="stop-color: #764ba2; stop-opacity: 1" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="progress-percentage">{{ getProgressPercentage(habits) }}%</span>
         </div>
       </div>
+    </div>
     }
 
     <!-- Habits List -->
@@ -68,55 +68,54 @@
       </div>
 
       @for (habit of todaysHabits$ | async; track habit.id) {
-        <div
-          class="habit-card"
-          [class.completed]="habit.completedToday"
-          (click)="habit.completedToday ? null : editHabit(habit.id!)"
-        >
-          <div class="habit-checkbox">
-            <ion-checkbox
-              [checked]="habit.completedToday"
-              [disabled]="habit.completedToday"
-              (ionChange)="toggleHabitCompletion(habit, $event)"
-              (click)="$event.stopPropagation()"
-            ></ion-checkbox>
-          </div>
-
-          <div class="habit-content">
-            <div class="habit-title">{{ habit.title }}</div>
-            <div class="habit-meta">
-              @if (habit.streak_count > 0) {
-                <span class="habit-streak">
-                  <ion-icon name="flame"></ion-icon>
-                  {{ habit.streak_count }} days
-                </span>
-              }
-              @if (habit.reminder_time) {
-                <span class="habit-time">
-                  <ion-icon name="time-outline"></ion-icon>
-                  {{ habit.reminder_time }}
-                </span>
-              }
-            </div>
-          </div>
-
-          @if (habit.completedToday) {
-            <div class="habit-status">
-              <ion-icon name="checkmark-circle" color="success"></ion-icon>
-            </div>
-          }
+      <div
+        class="habit-card"
+        [class.completed]="habit.completedToday"
+        (click)="habit.completedToday ? null : editHabit(habit.id!)"
+      >
+        <div class="habit-checkbox">
+          <ion-checkbox
+            [checked]="habit.completedToday"
+            [disabled]="habit.completedToday"
+            (ionChange)="toggleHabitCompletion(habit, $event)"
+            (click)="$event.stopPropagation()"
+          ></ion-checkbox>
         </div>
+
+        <div class="habit-content">
+          <div class="habit-title">{{ habit.title }}</div>
+          <div class="habit-meta">
+            @if (habit.streak_count > 0) {
+            <span class="habit-streak">
+              <ion-icon name="flame"></ion-icon>
+              {{ habit.streak_count }} days
+            </span>
+            } @if (habit.reminder_time) {
+            <span class="habit-time">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ habit.reminder_time }}
+            </span>
+            }
+          </div>
+        </div>
+
+        @if (habit.completedToday) {
+        <div class="habit-status">
+          <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        </div>
+        }
+      </div>
       }
 
       <!-- Empty State -->
       @if ((todaysHabits$ | async)?.length === 0) {
-        <div class="empty-state">
-          <div class="empty-icon">
-            <ion-icon name="checkbox-outline"></ion-icon>
-          </div>
-          <h3>No habits yet</h3>
-          <p>Start your journey to better habits!</p>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <ion-icon name="checkbox-outline"></ion-icon>
         </div>
+        <h3>No habits yet</h3>
+        <p>Start your journey to better habits!</p>
+      </div>
       }
     </div>
   </div>
