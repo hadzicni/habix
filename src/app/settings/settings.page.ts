@@ -19,9 +19,9 @@ import {
 import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss'],
+  selector: 'app-settings',
+  templateUrl: 'settings.page.html',
+  styleUrls: ['settings.page.scss'],
   imports: [
     IonHeader,
     IonToolbar,
@@ -33,7 +33,7 @@ import { ThemeService } from 'src/app/services/theme.service';
     IonToggle,
   ],
 })
-export class Tab3Page implements OnInit {
+export class SettingsPage implements OnInit {
   darkMode: boolean = false;
 
   constructor(private themeService: ThemeService) {

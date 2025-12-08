@@ -21,12 +21,12 @@ interface HabitWithStats {
 }
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  selector: 'app-statistics',
+  templateUrl: 'statistics.page.html',
+  styleUrls: ['statistics.page.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, CommonModule, IonIcon],
 })
-export class Tab2Page implements OnInit {
+export class StatisticsPage implements OnInit {
   selectedSegment = 'overview';
   habitsWithStats$: Observable<HabitWithStats[]>;
   overallStats$: Observable<any>;

@@ -27,9 +27,9 @@ import { HabitService } from 'src/app/services/habit.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-today',
+  templateUrl: 'today.page.html',
+  styleUrls: ['today.page.scss'],
   imports: [
     IonToast,
     IonHeader,
@@ -44,7 +44,7 @@ import { NotificationService } from 'src/app/services/notification.service';
     IonAlert,
   ],
 })
-export class Tab1Page implements OnInit {
+export class TodayPage implements OnInit {
   todaysHabits$: Observable<(Habit & { completedToday: boolean })[]>;
   isAlertOpen = false;
   isToastOpen = false;
