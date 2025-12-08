@@ -100,14 +100,14 @@ export class HabitDetailPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Error loading habit:', error);
-        this.showToast('Fehler beim Laden der Gewohnheit');
+        this.showToast('Error loading habit');
       },
     });
   }
 
   async saveHabit() {
     if (!this.habit.title?.trim()) {
-      this.showToast('Bitte gib einen Titel ein');
+      this.showToast('Please enter a title');
       return;
     }
 
@@ -128,12 +128,12 @@ export class HabitDetailPage implements OnInit {
           if (createdHabit.reminder_enabled && createdHabit.reminder_time) {
             await this.notificationService.scheduleHabitReminder(createdHabit);
           }
-          this.showToast('Gewohnheit erstellt!');
+          this.showToast('Habit created!');
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
           console.error('Error creating habit:', error);
-          this.showToast('Fehler beim Erstellen');
+          this.showToast('Error creating habit');
         },
       });
     } else {
@@ -148,12 +148,12 @@ export class HabitDetailPage implements OnInit {
               await this.notificationService.cancelHabitReminder(this.habitId!);
             }
           }
-          this.showToast('Gewohnheit gespeichert!');
+          this.showToast('Habit saved!');
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
           console.error('Error updating habit:', error);
-          this.showToast('Fehler beim Speichern');
+          this.showToast('Error saving habit');
         },
       });
     }
@@ -162,16 +162,16 @@ export class HabitDetailPage implements OnInit {
   async deleteHabit() {
     if (!this.habitId) return;
 
-    if (confirm('Möchtest du diese Gewohnheit wirklich löschen?')) {
+    if (confirm('Do you really want to delete this habit?')) {
       this.habitService.deleteHabit(this.habitId).subscribe({
         next: async () => {
           await this.notificationService.cancelHabitReminder(this.habitId!);
-          this.showToast('Gewohnheit gelöscht');
+          this.showToast('Habit deleted');
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
           console.error('Error deleting habit:', error);
-          this.showToast('Fehler beim Löschen');
+          this.showToast('Error deleting habit');
         },
       });
     }

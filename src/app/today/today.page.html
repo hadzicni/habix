@@ -16,8 +16,8 @@
     <div class="progress-card" *ngIf="(todaysHabits$ | async) as habits">
       <div class="progress-header">
         <div class="progress-title">
-          <h2>Heute</h2>
-          <p>{{ getCompletedCount(habits) }} von {{ habits.length }} geschafft</p>
+          <h2>Today</h2>
+          <p>{{ getCompletedCount(habits) }} of {{ habits.length }} completed</p>
         </div>
         <div class="progress-circle">
           <svg width="60" height="60">
@@ -56,7 +56,7 @@
     <!-- Habits List -->
     <div class="habits-section">
       <div class="section-header">
-        <h3>Meine Gewohnheiten</h3>
+        <h3>My Habits</h3>
       </div>
 
       <div
@@ -79,7 +79,7 @@
           <div class="habit-meta">
             <span class="habit-streak" *ngIf="habit.streak_count > 0">
               <ion-icon name="flame"></ion-icon>
-              {{ habit.streak_count }} Tage
+              {{ habit.streak_count }} days
             </span>
             <span class="habit-time" *ngIf="habit.reminder_time">
               <ion-icon name="time-outline"></ion-icon>
@@ -98,8 +98,8 @@
         <div class="empty-icon">
           <ion-icon name="checkbox-outline"></ion-icon>
         </div>
-        <h3>Noch keine Gewohnheiten</h3>
-        <p>Starte deine Reise zu besseren Gewohnheiten!</p>
+        <h3>No habits yet</h3>
+        <p>Start your journey to better habits!</p>
       </div>
     </div>
   </div>
@@ -114,7 +114,7 @@
   <!-- Add Habit Alert -->
   <ion-alert
     [isOpen]="isAlertOpen"
-    header="Neue Gewohnheit"
+    header="New Habit"
     [inputs]="alertInputs"
     [buttons]="alertButtons"
   ></ion-alert>

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/today"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ isNewHabit ? 'Neue Gewohnheit' : 'Gewohnheit bearbeiten' }}</ion-title>
+    <ion-title>{{ isNewHabit ? 'New Habit' : 'Edit Habit' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancel()">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
@@ -15,44 +15,44 @@
 <ion-content [fullscreen]="true">
   <div class="content-wrapper">
     <ion-list>
-      <!-- Titel -->
+      <!-- Title -->
       <ion-item>
-        <ion-label position="stacked">Titel *</ion-label>
+        <ion-label position="stacked">Title *</ion-label>
         <ion-input
           [(ngModel)]="habit.title"
-          placeholder="z.B. Joggen, Lesen, Meditation"
+          placeholder="e.g. Jogging, Reading, Meditation"
           required
         ></ion-input>
       </ion-item>
 
-      <!-- Beschreibung -->
+      <!-- Description -->
       <ion-item>
-        <ion-label position="stacked">Beschreibung</ion-label>
+        <ion-label position="stacked">Description</ion-label>
         <ion-textarea
           [(ngModel)]="habit.description"
-          placeholder="Optional: Warum ist diese Gewohnheit wichtig?"
+          placeholder="Optional: Why is this habit important?"
           rows="3"
           auto-grow="true"
         ></ion-textarea>
       </ion-item>
 
-      <!-- Erinnerung aktivieren -->
+      <!-- Enable Reminder -->
       <ion-item>
         <ion-icon name="notifications-outline" slot="start"></ion-icon>
-        <ion-label>Erinnerung aktivieren</ion-label>
+        <ion-label>Enable Reminder</ion-label>
         <ion-toggle [(ngModel)]="habit.reminder_enabled"></ion-toggle>
       </ion-item>
 
-      <!-- Erinnerungszeit -->
+      <!-- Reminder Time -->
       <ion-item *ngIf="habit.reminder_enabled">
         <ion-icon name="time-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Erinnerungszeit</ion-label>
+        <ion-label position="stacked">Reminder Time</ion-label>
         <ion-input type="time" [(ngModel)]="habit.reminder_time" placeholder="HH:MM"></ion-input>
       </ion-item>
 
-      <!-- Aktiv Status -->
+      <!-- Active Status -->
       <ion-item>
-        <ion-label>Gewohnheit aktiv</ion-label>
+        <ion-label>Habit Active</ion-label>
         <ion-toggle [(ngModel)]="habit.is_active"></ion-toggle>
       </ion-item>
     </ion-list>
@@ -61,7 +61,7 @@
     <div class="action-buttons">
       <ion-button expand="block" (click)="saveHabit()" class="save-button">
         <ion-icon slot="start" name="save-outline"></ion-icon>
-        {{ isNewHabit ? 'Erstellen' : 'Speichern' }}
+        {{ isNewHabit ? 'Create' : 'Save' }}
       </ion-button>
 
       <ion-button
@@ -73,7 +73,7 @@
         class="delete-button"
       >
         <ion-icon slot="start" name="trash-outline"></ion-icon>
-        Löschen
+        Delete
       </ion-button>
     </div>
   </div>

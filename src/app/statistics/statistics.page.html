@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Statistiken</ion-title>
+    <ion-title>Statistics</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Statistiken</ion-title>
+      <ion-title size="large">Statistics</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -20,7 +20,7 @@
         </div>
         <div class="stat-content">
           <div class="stat-value">{{ stats.totalHabits }}</div>
-          <div class="stat-label">Gewohnheiten</div>
+          <div class="stat-label">Habits</div>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
         </div>
         <div class="stat-content">
           <div class="stat-value">{{ stats.activeStreaks }}</div>
-          <div class="stat-label">Aktive Streaks</div>
+          <div class="stat-label">Active Streaks</div>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
         </div>
         <div class="stat-content">
           <div class="stat-value">{{ stats.longestStreak }}</div>
-          <div class="stat-label">Längster Streak</div>
+          <div class="stat-label">Longest Streak</div>
         </div>
       </div>
 
@@ -50,7 +50,7 @@
         </div>
         <div class="stat-content">
           <div class="stat-value">{{ stats.totalCompletions }}</div>
-          <div class="stat-label">Gesamt erledigt</div>
+          <div class="stat-label">Total Completed</div>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
     <!-- Individual Habit Stats -->
     <div class="habits-stats-section">
       <div class="section-header">
-        <h3>Deine Gewohnheiten</h3>
+        <h3>Your Habits</h3>
       </div>
 
       <div class="habit-stat-card" *ngFor="let habitWithStats of habitsWithStats$ | async">
@@ -73,15 +73,15 @@
         <div class="habit-stat-grid">
           <div class="stat-item">
             <div class="stat-item-value">{{ habitWithStats.stats.current_streak }}</div>
-            <div class="stat-item-label">Aktueller Streak</div>
+            <div class="stat-item-label">Current Streak</div>
           </div>
           <div class="stat-item">
             <div class="stat-item-value">{{ habitWithStats.stats.longest_streak }}</div>
-            <div class="stat-item-label">Längster Streak</div>
+            <div class="stat-item-label">Longest Streak</div>
           </div>
           <div class="stat-item">
             <div class="stat-item-value">{{ habitWithStats.stats.total_completions }}</div>
-            <div class="stat-item-label">Gesamt</div>
+            <div class="stat-item-label">Total</div>
           </div>
         </div>
 
@@ -95,8 +95,8 @@
         <div class="empty-icon">
           <ion-icon name="stats-chart-outline"></ion-icon>
         </div>
-        <h3>Noch keine Statistiken</h3>
-        <p>Erstelle Gewohnheiten und tracke deine Fortschritte!</p>
+        <h3>No statistics yet</h3>
+        <p>Create habits and track your progress!</p>
       </div>
     </div>
   </div>

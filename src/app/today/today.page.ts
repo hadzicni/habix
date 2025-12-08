@@ -64,28 +64,28 @@ export class TodayPage implements OnInit {
     {
       name: 'title',
       type: 'text',
-      placeholder: 'Titel der Gewohnheit',
+      placeholder: 'Habit title',
     },
     {
       name: 'description',
       type: 'textarea',
-      placeholder: 'Beschreibung (optional)',
+      placeholder: 'Description (optional)',
     },
     {
       name: 'reminderTime',
       type: 'time',
-      placeholder: 'Erinnerungszeit (optional)',
+      placeholder: 'Reminder time (optional)',
     },
   ];
 
   alertButtons = [
     {
-      text: 'Abbrechen',
+      text: 'Cancel',
       role: 'cancel',
       handler: () => this.onAddHabitCancel(),
     },
     {
-      text: 'Erstellen',
+      text: 'Create',
       role: 'confirm',
       handler: (data: any) => this.handleAddHabit(data),
     },
@@ -201,7 +201,7 @@ export class TodayPage implements OnInit {
   }
 
   getTodayDate(): string {
-    return new Date().toLocaleDateString('de-DE', {
+    return new Date().toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',

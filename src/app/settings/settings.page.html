@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Einstellungen</ion-title>
+    <ion-title>Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Einstellungen</ion-title>
+      <ion-title size="large">Settings</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -15,7 +15,7 @@
     <!-- Theme Section -->
     <div class="settings-section">
       <div class="section-header">
-        <h3>Design</h3>
+        <h3>Appearance</h3>
       </div>
 
       <div class="settings-card">
@@ -25,7 +25,7 @@
           </div>
           <div class="setting-content">
             <div class="setting-title">Dark Mode</div>
-            <div class="setting-description">Dunkles Erscheinungsbild aktivieren</div>
+            <div class="setting-description">Enable dark theme</div>
           </div>
           <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode($event)"></ion-toggle>
         </div>
@@ -35,7 +35,7 @@
     <!-- Notifications Section -->
     <div class="settings-section">
       <div class="section-header">
-        <h3>Benachrichtigungen</h3>
+        <h3>Notifications</h3>
       </div>
 
       <div class="settings-card">
@@ -44,8 +44,8 @@
             <ion-icon name="notifications-outline"></ion-icon>
           </div>
           <div class="setting-content">
-            <div class="setting-title">Push-Benachrichtigungen</div>
-            <div class="setting-description">Erinnerungen für deine Gewohnheiten</div>
+            <div class="setting-title">Push Notifications</div>
+            <div class="setting-description">Reminders for your habits</div>
           </div>
           <ion-toggle></ion-toggle>
         </div>
@@ -55,7 +55,7 @@
     <!-- About Section -->
     <div class="settings-section">
       <div class="section-header">
-        <h3>Über die App</h3>
+        <h3>About</h3>
       </div>
 
       <div class="settings-card">
@@ -74,7 +74,7 @@
             <ion-icon name="code-slash-outline"></ion-icon>
           </div>
           <div class="info-content">
-            <div class="info-title">Entwickelt mit</div>
+            <div class="info-title">Built with</div>
             <div class="info-value">Ionic Angular & Capacitor</div>
           </div>
         </div>
