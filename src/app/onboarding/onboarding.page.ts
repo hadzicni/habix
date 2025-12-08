@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon, IonInput, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   arrowForwardOutline,
   checkmarkCircleOutline,
   flameOutline,
   notificationsOutline,
+  personOutline,
   statsChartOutline,
 } from 'ionicons/icons';
 
@@ -16,15 +18,23 @@ import {
   templateUrl: './onboarding.page.html',
   styleUrls: ['./onboarding.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonContent, IonButton, IonIcon],
+  imports: [CommonModule, FormsModule, IonContent, IonButton, IonIcon, IonInput, IonItem],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class OnboardingPage {
   @ViewChild('swiper') swiper: any;
 
   currentSlide = 0;
+  userName: string = '';
 
   slides = [
+    {
+      icon: 'person-outline',
+      title: 'Welcome!',
+      description: "Let's personalize your experience. What should we call you?",
+      color: '#667eea',
+      isNameInput: true,
+    },
     {
       icon: 'checkmark-circle-outline',
       title: 'Track Your Habits',
@@ -62,6 +72,7 @@ export class OnboardingPage {
       statsChartOutline,
       notificationsOutline,
       arrowForwardOutline,
+      personOutline,
     });
   }
 
@@ -90,6 +101,9 @@ export class OnboardingPage {
 
   finishOnboarding() {
     localStorage.setItem('hasCompletedOnboarding', 'true');
+    if (this.userName.trim()) {
+      localStorage.setItem('userName', this.userName.trim());
+    }
     this.router.navigate(['/tabs/today']);
   }
 

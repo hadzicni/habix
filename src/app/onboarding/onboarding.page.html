@@ -20,6 +20,18 @@
           </div>
           <h2>{{ slide.title }}</h2>
           <p>{{ slide.description }}</p>
+          
+          <!-- Name Input for first slide -->
+          <div *ngIf="slide.isNameInput" class="name-input-container">
+            <ion-item lines="none" class="name-input-item">
+              <ion-input
+                [(ngModel)]="userName"
+                placeholder="Enter your name"
+                type="text"
+                class="name-input"
+              ></ion-input>
+            </ion-item>
+          </div>
         </div>
       </swiper-slide>
     </swiper-container>

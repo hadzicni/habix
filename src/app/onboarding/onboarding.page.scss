@@ -80,6 +80,30 @@
   }
 }
 
+.name-input-container {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 2rem;
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+
+  .name-input-item {
+    --background: rgba(255, 255, 255, 0.9);
+    --border-radius: 14px;
+    --padding-start: 1.5rem;
+    --padding-end: 1.5rem;
+    --min-height: 56px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    
+    .name-input {
+      font-size: 1.1rem;
+      font-weight: 500;
+      --color: var(--ion-color-dark);
+      --placeholder-color: var(--ion-color-medium);
+      --placeholder-opacity: 0.6;
+    }
+  }
+}
+
 .navigation-buttons {
   padding: 1rem 0 2rem;
   animation: fadeInUp 0.6s ease-out 0.5s both;

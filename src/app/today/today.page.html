@@ -12,6 +12,12 @@
   </ion-header>
 
   <div class="content-wrapper">
+    <!-- Greeting Header -->
+    <div class="greeting-header">
+      <h1>{{ getGreeting() }}</h1>
+      <p class="date-subtitle">{{ getTodayDate() }}</p>
+    </div>
+
     <!-- Today's Progress Summary -->
     <div class="progress-card" *ngIf="(todaysHabits$ | async) as habits">
       <div class="progress-header">

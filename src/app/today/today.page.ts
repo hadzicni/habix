@@ -32,12 +32,12 @@ import { NotificationService } from 'src/app/services/notification.service';
   templateUrl: 'today.page.html',
   styleUrls: ['today.page.scss'],
   imports: [
+    CommonModule,
     IonToast,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
-    CommonModule,
     IonCheckbox,
     IonIcon,
     IonFab,
@@ -50,6 +50,7 @@ export class TodayPage implements OnInit {
   isAlertOpen = false;
   isToastOpen = false;
   toastMessage = '';
+  userName: string = '';
 
   newHabit = {
     title: '',
@@ -101,7 +102,7 @@ export class TodayPage implements OnInit {
   }
 
   ngOnInit() {
-    // Initialize habits
+    this.userName = localStorage.getItem('userName') || '';
   }
 
   async toggleHabitCompletion(habit: Habit & { completedToday: boolean }, event: any) {
@@ -207,6 +208,21 @@ export class TodayPage implements OnInit {
       month: 'long',
       day: 'numeric',
     });
+  }
+
+  getGreeting(): string {
+    const hour = new Date().getHours();
+    let greeting = 'Hello';
+    
+    if (hour < 12) {
+      greeting = 'Good Morning';
+    } else if (hour < 18) {
+      greeting = 'Good Afternoon';
+    } else {
+      greeting = 'Good Evening';
+    }
+    
+    return this.userName ? `${greeting}, ${this.userName}!` : `${greeting}!`;
   }
 
   getCompletedCount(habits: (Habit & { completedToday: boolean })[]): number {
