@@ -172,16 +172,16 @@ ion-item-option {
     --size: 28px;
     --border-radius: 10px;
     transition: transform 0.2s ease;
-    
+
     &:active {
       transform: scale(0.9);
     }
   }
-  
+
   ion-checkbox::part(container) {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   ion-checkbox.checkbox-checked {
     animation: checkBounce 0.5s ease;
   }
