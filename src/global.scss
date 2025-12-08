@@ -124,3 +124,178 @@
     Roboto,
     sans-serif;
 }
+
+/**
+ * Modern Global Styles
+ * ----------------------------------------------------------------------------
+ */
+
+// Smooth transitions for everything
+* {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+// Modern content padding
+ion-content {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+}
+
+// Modern toolbar styling
+ion-toolbar {
+  --border-width: 0;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --min-height: 60px;
+
+  ion-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+}
+
+// Modern header with blur effect
+ion-header {
+  ion-toolbar {
+    --background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-header {
+    ion-toolbar {
+      --background: rgba(30, 41, 59, 0.85);
+    }
+  }
+}
+
+// Cards with modern shadow
+ion-card {
+  border-radius: 16px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin: 12px 0;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+
+  &:hover {
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.08),
+      0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+
+// Modern list items
+ion-item {
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 64px;
+  margin-bottom: 8px;
+
+  &::part(native) {
+    border-radius: 12px;
+  }
+}
+
+// Modern FAB button
+ion-fab-button {
+  --box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  --border-radius: 16px;
+  width: 56px;
+  height: 56px;
+
+  &:hover {
+    --box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+    transform: scale(1.05);
+  }
+}
+
+// Modern alerts
+ion-alert {
+  --backdrop-opacity: 0.6;
+
+  .alert-wrapper {
+    border-radius: 16px;
+  }
+}
+
+// Modern modals
+ion-modal {
+  --border-radius: 16px;
+  --box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+// Modern buttons
+ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+// Modern checkbox
+ion-checkbox {
+  --size: 24px;
+  --border-radius: 8px;
+  --checkbox-background-checked: var(--ion-color-primary);
+  --border-width: 2px;
+}
+
+// Modern toggle
+ion-toggle {
+  --handle-width: 24px;
+  --handle-height: 24px;
+  --handle-spacing: 4px;
+}
+
+// Smooth animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+// Hide scrollbar but keep functionality
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

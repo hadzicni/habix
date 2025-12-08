@@ -1,53 +1,236 @@
-.habit-list-container {
-  padding: 16px;
+// Modern Tab1 Page Styles
+
+.content-wrapper {
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
+// Progress Card
+.progress-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 24px;
+  margin: 0 20px 24px 20px;
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.25);
+  color: white;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.habit-info {
+.progress-header {
   display: flex;
-  gap: 12px;
-  font-size: 0.9em;
-  color: var(--ion-color-medium);
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .streak {
+.progress-title {
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 6px 0 0 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
     font-weight: 500;
   }
 }
 
-.empty-state {
-  text-align: center;
-  padding: 48px 24px;
+.progress-circle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+
+  svg {
+    transform: rotate(0deg);
+
+    circle {
+      transition: stroke-dashoffset 0.5s ease;
+    }
+  }
+
+  .progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+}
+
+// Habits Section
+.habits-section {
+  padding: 0 20px;
+}
+
+.section-header {
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    letter-spacing: -0.01em;
+  }
+}
+
+// Habit Cards
+.habit-card {
+  background: var(--ion-color-light);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  animation: fadeIn 0.3s ease-out;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.completed {
+    opacity: 0.7;
+
+    .habit-title {
+      text-decoration: line-through;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.habit-checkbox {
+  flex-shrink: 0;
+
+  ion-checkbox {
+    --size: 28px;
+    --border-radius: 10px;
+  }
+}
+
+.habit-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ion-text-color);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.habit-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.875rem;
   color: var(--ion-color-medium);
+  flex-wrap: wrap;
+}
+
+.habit-streak,
+.habit-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
 
   ion-icon {
-    margin-bottom: 16px;
+    font-size: 16px;
+  }
+}
+
+.habit-streak {
+  color: #f59e0b;
+
+  ion-icon {
+    color: #f59e0b;
+  }
+}
+
+.habit-status {
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 28px;
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeIn 0.5s ease-out;
+
+  .empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 40px;
+      color: white;
+    }
   }
 
   h3 {
-    margin: 16px 0 8px 0;
-    color: var(--ion-color-dark);
+    margin: 0 0 8px 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ion-text-color);
   }
 
   p {
     margin: 0;
-    line-height: 1.4;
+    color: var(--ion-color-medium);
+    font-size: 0.95rem;
   }
 }
 
-ion-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  margin-bottom: 8px;
-  border-radius: 12px;
-  --background: var(--ion-color-light);
+// FAB Button
+ion-fab-button {
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --color: white;
+
+  ion-icon {
+    font-size: 28px;
+  }
 }
 
-ion-checkbox {
-  margin-right: 16px;
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .habit-card {
+    background: var(--ion-color-light);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
 }
 
 ion-fab-button {

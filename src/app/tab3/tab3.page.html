@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Einstellungen </ion-title>
+    <ion-title>Einstellungen</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,56 +11,74 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Design</ion-label>
-    </ion-list-header>
+  <div class="content-wrapper">
+    <!-- Theme Section -->
+    <div class="settings-section">
+      <div class="section-header">
+        <h3>Design</h3>
+      </div>
 
-    <ion-item>
-      <ion-icon name="moon-outline" slot="start"></ion-icon>
-      <ion-label>Dark Mode</ion-label>
-      <ion-toggle
-        slot="end"
-        [(ngModel)]="darkMode"
-        (ionChange)="toggleDarkMode($event)"
-      ></ion-toggle>
-    </ion-item>
-  </ion-list>
+      <div class="settings-card">
+        <div class="setting-item">
+          <div class="setting-icon">
+            <ion-icon name="moon-outline"></ion-icon>
+          </div>
+          <div class="setting-content">
+            <div class="setting-title">Dark Mode</div>
+            <div class="setting-description">Dunkles Erscheinungsbild aktivieren</div>
+          </div>
+          <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode($event)"></ion-toggle>
+        </div>
+      </div>
+    </div>
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Benachrichtigungen</ion-label>
-    </ion-list-header>
+    <!-- Notifications Section -->
+    <div class="settings-section">
+      <div class="section-header">
+        <h3>Benachrichtigungen</h3>
+      </div>
 
-    <ion-item>
-      <ion-icon name="notifications-outline" slot="start"></ion-icon>
-      <ion-label>
-        <h2>Push-Benachrichtigungen</h2>
-        <p>Erinnerungen für deine Gewohnheiten</p>
-      </ion-label>
-      <ion-toggle slot="end"></ion-toggle>
-    </ion-item>
-  </ion-list>
+      <div class="settings-card">
+        <div class="setting-item">
+          <div class="setting-icon notifications">
+            <ion-icon name="notifications-outline"></ion-icon>
+          </div>
+          <div class="setting-content">
+            <div class="setting-title">Push-Benachrichtigungen</div>
+            <div class="setting-description">Erinnerungen für deine Gewohnheiten</div>
+          </div>
+          <ion-toggle></ion-toggle>
+        </div>
+      </div>
+    </div>
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Über die App</ion-label>
-    </ion-list-header>
+    <!-- About Section -->
+    <div class="settings-section">
+      <div class="section-header">
+        <h3>Über die App</h3>
+      </div>
 
-    <ion-item button="false" detail="false">
-      <ion-icon name="information-circle-outline" slot="start"></ion-icon>
-      <ion-label>
-        <h2>Version</h2>
-        <p>1.0.0</p>
-      </ion-label>
-    </ion-item>
+      <div class="settings-card">
+        <div class="info-item">
+          <div class="setting-icon info">
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <div class="info-title">Version</div>
+            <div class="info-value">1.0.0</div>
+          </div>
+        </div>
 
-    <ion-item button="false" detail="false">
-      <ion-icon name="code-outline" slot="start"></ion-icon>
-      <ion-label>
-        <h2>Entwickelt mit</h2>
-        <p>Ionic Angular & Capacitor</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+        <div class="info-item">
+          <div class="setting-icon code">
+            <ion-icon name="code-slash-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <div class="info-title">Entwickelt mit</div>
+            <div class="info-value">Ionic Angular & Capacitor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

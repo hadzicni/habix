@@ -1,2 +1,187 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// Modern Habit Tracker Theme
+// Custom CSS variables for a clean, minimal design
+
+:root {
+  // Primary Brand Colors - Modern Blue-Purple Gradient
+  --ion-color-primary: #667eea;
+  --ion-color-primary-rgb: 102, 126, 234;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #5a6fce;
+  --ion-color-primary-tint: #7588ec;
+
+  // Secondary - Vibrant Accent
+  --ion-color-secondary: #764ba2;
+  --ion-color-secondary-rgb: 118, 75, 162;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #68428f;
+  --ion-color-secondary-tint: #8459ab;
+
+  // Tertiary - Fresh Green for Success
+  --ion-color-tertiary: #10b981;
+  --ion-color-tertiary-rgb: 16, 185, 129;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #0ea372;
+  --ion-color-tertiary-tint: #28c08e;
+
+  // Success
+  --ion-color-success: #10b981;
+  --ion-color-success-rgb: 16, 185, 129;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #0ea372;
+  --ion-color-success-tint: #28c08e;
+
+  // Warning
+  --ion-color-warning: #f59e0b;
+  --ion-color-warning-rgb: 245, 158, 11;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #d88b0a;
+  --ion-color-warning-tint: #f6a823;
+
+  // Danger
+  --ion-color-danger: #ef4444;
+  --ion-color-danger-rgb: 239, 68, 68;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #d23c3c;
+  --ion-color-danger-tint: #f15757;
+
+  // Light Mode Colors
+  --ion-color-light: #f8fafc;
+  --ion-color-light-rgb: 248, 250, 252;
+  --ion-color-light-contrast: #1e293b;
+  --ion-color-light-contrast-rgb: 30, 41, 59;
+  --ion-color-light-shade: #dae0e8;
+  --ion-color-light-tint: #f9fbfc;
+
+  --ion-color-medium: #64748b;
+  --ion-color-medium-rgb: 100, 116, 139;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #58667a;
+  --ion-color-medium-tint: #748297;
+
+  --ion-color-dark: #1e293b;
+  --ion-color-dark-rgb: 30, 41, 59;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1a2433;
+  --ion-color-dark-tint: #353e4f;
+
+  // Background Colors
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+
+  --ion-text-color: #1e293b;
+  --ion-text-color-rgb: 30, 41, 59;
+
+  // Toolbar
+  --ion-toolbar-background: #ffffff;
+  --ion-toolbar-border-color: transparent;
+  --ion-toolbar-color: #1e293b;
+
+  // Card
+  --ion-card-background: #ffffff;
+
+  // Item
+  --ion-item-background: transparent;
+  --ion-item-border-color: #e2e8f0;
+
+  // Tab bar
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-border-color: #e2e8f0;
+  --ion-tab-bar-color: #64748b;
+  --ion-tab-bar-color-selected: #667eea;
+}
+
+// Dark Mode
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-color-primary: #818cf8;
+    --ion-color-primary-rgb: 129, 140, 248;
+    --ion-color-primary-contrast: #000000;
+    --ion-color-primary-contrast-rgb: 0, 0, 0;
+    --ion-color-primary-shade: #727bda;
+    --ion-color-primary-tint: #8e96f9;
+
+    --ion-color-secondary: #a78bfa;
+    --ion-color-secondary-rgb: 167, 139, 250;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade: #937adc;
+    --ion-color-secondary-tint: #b098fb;
+
+    --ion-color-tertiary: #34d399;
+    --ion-color-tertiary-rgb: 52, 211, 153;
+    --ion-color-tertiary-contrast: #000000;
+    --ion-color-tertiary-contrast-rgb: 0, 0, 0;
+    --ion-color-tertiary-shade: #2eba87;
+    --ion-color-tertiary-tint: #48d7a3;
+
+    --ion-color-success: #34d399;
+    --ion-color-success-rgb: 52, 211, 153;
+    --ion-color-success-contrast: #000000;
+    --ion-color-success-contrast-rgb: 0, 0, 0;
+    --ion-color-success-shade: #2eba87;
+    --ion-color-success-tint: #48d7a3;
+
+    --ion-color-warning: #fbbf24;
+    --ion-color-warning-rgb: 251, 191, 36;
+    --ion-color-warning-contrast: #000000;
+    --ion-color-warning-contrast-rgb: 0, 0, 0;
+    --ion-color-warning-shade: #dda820;
+    --ion-color-warning-tint: #fbc53a;
+
+    --ion-color-danger: #f87171;
+    --ion-color-danger-rgb: 248, 113, 113;
+    --ion-color-danger-contrast: #000000;
+    --ion-color-danger-contrast-rgb: 0, 0, 0;
+    --ion-color-danger-shade: #da6363;
+    --ion-color-danger-tint: #f97f7f;
+
+    --ion-color-light: #1e293b;
+    --ion-color-light-rgb: 30, 41, 59;
+    --ion-color-light-contrast: #ffffff;
+    --ion-color-light-contrast-rgb: 255, 255, 255;
+    --ion-color-light-shade: #1a2433;
+    --ion-color-light-tint: #353e4f;
+
+    --ion-color-medium: #94a3b8;
+    --ion-color-medium-rgb: 148, 163, 184;
+    --ion-color-medium-contrast: #000000;
+    --ion-color-medium-contrast-rgb: 0, 0, 0;
+    --ion-color-medium-shade: #828fa2;
+    --ion-color-medium-tint: #9facbf;
+
+    --ion-color-dark: #f1f5f9;
+    --ion-color-dark-rgb: 241, 245, 249;
+    --ion-color-dark-contrast: #000000;
+    --ion-color-dark-contrast-rgb: 0, 0, 0;
+    --ion-color-dark-shade: #d4d8db;
+    --ion-color-dark-tint: #f2f6fa;
+
+    --ion-background-color: #0f172a;
+    --ion-background-color-rgb: 15, 23, 42;
+
+    --ion-text-color: #f1f5f9;
+    --ion-text-color-rgb: 241, 245, 249;
+
+    --ion-toolbar-background: #1e293b;
+    --ion-toolbar-border-color: transparent;
+    --ion-toolbar-color: #f1f5f9;
+
+    --ion-card-background: #1e293b;
+
+    --ion-item-background: transparent;
+    --ion-item-border-color: #334155;
+
+    --ion-tab-bar-background: #1e293b;
+    --ion-tab-bar-border-color: #334155;
+    --ion-tab-bar-color: #94a3b8;
+    --ion-tab-bar-color-selected: #818cf8;
+  }
+}

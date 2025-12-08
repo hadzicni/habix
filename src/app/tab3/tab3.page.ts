@@ -5,14 +5,17 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
   IonTitle,
   IonToggle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import {
+  codeSlashOutline,
+  informationCircleOutline,
+  moonOutline,
+  notificationsOutline,
+} from 'ionicons/icons';
 import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
@@ -25,20 +28,17 @@ import { ThemeService } from 'src/app/services/theme.service';
     IonTitle,
     IonContent,
     CommonModule,
-    IonList,
-    IonListHeader,
     FormsModule,
-    IonLabel,
-    IonItem,
     IonIcon,
-    IonLabel,
     IonToggle,
   ],
 })
 export class Tab3Page implements OnInit {
   darkMode: boolean = false;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService) {
+    addIcons({ moonOutline, notificationsOutline, informationCircleOutline, codeSlashOutline });
+  }
 
   async ngOnInit() {
     await this.loadThemePreference();

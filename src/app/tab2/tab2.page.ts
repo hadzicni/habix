@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { calendar, checkmark, flame, trendingUp, trophy } from 'ionicons/icons';
+import {
+  calendar,
+  checkmark,
+  checkmarkCircle,
+  flame,
+  statsChartOutline,
+  trendingUp,
+  trophy,
+} from 'ionicons/icons';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { Habit, HabitStatistics } from 'src/app/interfaces/habit.interface';
 import { HabitService } from 'src/app/services/habit.service';
@@ -26,18 +24,7 @@ interface HabitWithStats {
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    CommonModule,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonIcon,
-  ],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, CommonModule, IonIcon],
 })
 export class Tab2Page implements OnInit {
   selectedSegment = 'overview';
@@ -45,16 +32,22 @@ export class Tab2Page implements OnInit {
   overallStats$: Observable<any>;
 
   constructor(private habitService: HabitService) {
-    addIcons({ flame, trophy, calendar, trendingUp, checkmark });
+    addIcons({
+      flame,
+      trophy,
+      calendar,
+      trendingUp,
+      checkmark,
+      checkmarkCircle,
+      statsChartOutline,
+    });
 
     this.habitsWithStats$ = this.habitService.habits$.pipe(
       switchMap((habits) =>
         from(
           Promise.all(
             habits.map(async (habit) => {
-              const stats = await this.habitService
-                .getHabitStatistics(habit.id!)
-                .toPromise();
+              const stats = await this.habitService.getHabitStatistics(habit.id!).toPromise();
               return {
                 habit,
                 stats:
@@ -68,25 +61,20 @@ export class Tab2Page implements OnInit {
                     monthly_data: [],
                   } as HabitStatistics),
               };
-            })
-          )
-        )
-      )
+            }),
+          ),
+        ),
+      ),
     );
 
     this.overallStats$ = this.habitsWithStats$.pipe(
       map((habitsWithStats) => {
         const totalHabits = habitsWithStats.length;
-        const activeStreaks = habitsWithStats.filter(
-          (h) => h.stats.current_streak > 0
-        ).length;
-        const longestStreak = Math.max(
-          ...habitsWithStats.map((h) => h.stats.longest_streak),
-          0
-        );
+        const activeStreaks = habitsWithStats.filter((h) => h.stats.current_streak > 0).length;
+        const longestStreak = Math.max(...habitsWithStats.map((h) => h.stats.longest_streak), 0);
         const totalCompletions = habitsWithStats.reduce(
           (sum, h) => sum + h.stats.total_completions,
-          0
+          0,
         );
 
         return {
@@ -94,12 +82,9 @@ export class Tab2Page implements OnInit {
           activeStreaks,
           longestStreak,
           totalCompletions,
-          completionRate:
-            totalHabits > 0
-              ? Math.round((activeStreaks / totalHabits) * 100)
-              : 0,
+          completionRate: totalHabits > 0 ? Math.round((activeStreaks / totalHabits) * 100) : 0,
         };
-      })
+      }),
     );
   }
 
@@ -116,9 +101,7 @@ export class Tab2Page implements OnInit {
 
   async getWeekData(habit: Habit): Promise<boolean[]> {
     try {
-      const completions = await this.habitService
-        .getHabitStatistics(habit.id!)
-        .toPromise();
+      const completions = await this.habitService.getHabitStatistics(habit.id!).toPromise();
       if (!completions) return Array(7).fill(false);
 
       const today = new Date();
@@ -133,9 +116,7 @@ export class Tab2Page implements OnInit {
 
         const dateStr = checkDate.toDateString();
         const hasCompletion = completions.weekly_data.some((week: any) =>
-          week.completionDays.some(
-            (day: Date) => new Date(day).toDateString() === dateStr
-          )
+          week.completionDays.some((day: Date) => new Date(day).toDateString() === dateStr),
         );
 
         weekData.push(hasCompletion);
@@ -159,5 +140,12 @@ export class Tab2Page implements OnInit {
     if (streak < 7) return 'flame';
     if (streak < 30) return 'trophy';
     return 'trophy';
+  }
+
+  getCompletionRate(habitWithStats: HabitWithStats): number {
+    const currentStreak = habitWithStats.stats.current_streak;
+    const longestStreak = habitWithStats.stats.longest_streak;
+    if (longestStreak === 0) return 0;
+    return Math.min((currentStreak / longestStreak) * 100, 100);
   }
 }

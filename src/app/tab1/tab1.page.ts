@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   IonAlert,
@@ -7,21 +8,23 @@ import {
   IonFabButton,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
   IonTitle,
   IonToast,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import { addIcons } from 'ionicons';
+import {
+  add,
+  checkboxOutline,
+  checkmarkCircle,
+  ellipsisVertical,
+  flame,
+  timeOutline,
+} from 'ionicons/icons';
+import { Observable } from 'rxjs';
+import { Habit } from 'src/app/interfaces/habit.interface';
 import { HabitService } from 'src/app/services/habit.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { Habit } from 'src/app/interfaces/habit.interface';
-import { addIcons } from 'ionicons';
-import { add, checkmarkCircle, ellipsisVertical } from 'ionicons/icons';
-import { Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tab1',
@@ -29,15 +32,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['tab1.page.scss'],
   imports: [
     IonToast,
-    IonItem,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
     CommonModule,
-    IonList,
     IonCheckbox,
-    IonLabel,
     IonIcon,
     IonFab,
     IonFabButton,
@@ -92,9 +92,9 @@ export class Tab1Page implements OnInit {
 
   constructor(
     private habitService: HabitService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {
-    addIcons({ add, checkmarkCircle, ellipsisVertical });
+    addIcons({ add, checkmarkCircle, ellipsisVertical, flame, timeOutline, checkboxOutline });
     this.todaysHabits$ = this.habitService.getTodaysHabits();
   }
 
@@ -102,10 +102,7 @@ export class Tab1Page implements OnInit {
     // Initialize habits
   }
 
-  async toggleHabitCompletion(
-    habit: Habit & { completedToday: boolean },
-    event: any
-  ) {
+  async toggleHabitCompletion(habit: Habit & { completedToday: boolean }, event: any) {
     if (event.detail.checked && !habit.completedToday) {
       // Complete the habit
       this.habitService.completeHabit(habit.id!).subscribe({
@@ -123,13 +120,11 @@ export class Tab1Page implements OnInit {
   }
 
   private async checkStreakAchievement(habit: Habit) {
-    const stats = await this.habitService
-      .getHabitStatistics(habit.id!)
-      .toPromise();
+    const stats = await this.habitService.getHabitStatistics(habit.id!).toPromise();
     if (stats) {
       await this.notificationService.scheduleEncouragementNotification(
         habit.title,
-        stats.current_streak
+        stats.current_streak,
       );
     }
   }
@@ -206,5 +201,24 @@ export class Tab1Page implements OnInit {
       month: 'long',
       day: 'numeric',
     });
+  }
+
+  getCompletedCount(habits: (Habit & { completedToday: boolean })[]): number {
+    return habits.filter((h) => h.completedToday).length;
+  }
+
+  getProgressPercentage(habits: (Habit & { completedToday: boolean })[]): number {
+    if (habits.length === 0) return 0;
+    return Math.round((this.getCompletedCount(habits) / habits.length) * 100);
+  }
+
+  getCircumference(): number {
+    return 2 * Math.PI * 26; // radius = 26
+  }
+
+  getProgress(habits: (Habit & { completedToday: boolean })[]): number {
+    const percentage = this.getProgressPercentage(habits);
+    const circumference = this.getCircumference();
+    return circumference - (percentage / 100) * circumference;
   }
 }

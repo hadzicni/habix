@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Tagesübersicht </ion-title>
+    <ion-title>Habit Tracker</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,47 +11,99 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="habit-list-container">
-    <ion-list>
-      <div *ngFor="let habit of todaysHabits$ | async">
-        <ion-item>
+  <div class="content-wrapper">
+    <!-- Today's Progress Summary -->
+    <div class="progress-card" *ngIf="(todaysHabits$ | async) as habits">
+      <div class="progress-header">
+        <div class="progress-title">
+          <h2>Heute</h2>
+          <p>{{ getCompletedCount(habits) }} von {{ habits.length }} geschafft</p>
+        </div>
+        <div class="progress-circle">
+          <svg width="60" height="60">
+            <circle
+              cx="30"
+              cy="30"
+              r="26"
+              stroke="rgba(102, 126, 234, 0.1)"
+              stroke-width="4"
+              fill="none"
+            />
+            <circle
+              cx="30"
+              cy="30"
+              r="26"
+              stroke="url(#gradient)"
+              stroke-width="4"
+              fill="none"
+              [attr.stroke-dasharray]="getCircumference()"
+              [attr.stroke-dashoffset]="getProgress(habits)"
+              stroke-linecap="round"
+              transform="rotate(-90 30 30)"
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color: #667eea; stop-opacity: 1" />
+                <stop offset="100%" style="stop-color: #764ba2; stop-opacity: 1" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="progress-percentage">{{ getProgressPercentage(habits) }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Habits List -->
+    <div class="habits-section">
+      <div class="section-header">
+        <h3>Meine Gewohnheiten</h3>
+      </div>
+
+      <div
+        class="habit-card"
+        *ngFor="let habit of todaysHabits$ | async"
+        [class.completed]="habit.completedToday"
+      >
+        <div class="habit-checkbox">
           <ion-checkbox
-            slot="start"
             [checked]="habit.completedToday"
             [disabled]="habit.completedToday"
             (ionChange)="toggleHabitCompletion(habit, $event)"
-          >
-          </ion-checkbox>
-          <ion-label>
-            <h2 [class.completed]="habit.completedToday">{{ habit.title }}</h2>
-            <p *ngIf="habit.description">{{ habit.description }}</p>
-            <p class="habit-info">
-              <span *ngIf="habit.reminder_enabled && habit.reminder_time">
-                🔔 {{ habit.reminder_time }}
-              </span>
-              <span class="streak">🔥 {{ habit.streak_count }} Tage</span>
-            </p>
-          </ion-label>
-          <ion-icon
-            name="checkmark-circle"
-            slot="end"
-            *ngIf="habit.completedToday"
-            color="success"
-          >
-          </ion-icon>
-        </ion-item>
-      </div>
-    </ion-list>
+          ></ion-checkbox>
+        </div>
 
-    <div class="empty-state" *ngIf="(todaysHabits$ | async)?.length === 0">
-      <ion-icon name="add" size="large" color="medium"></ion-icon>
-      <h3>Keine Gewohnheiten gefunden</h3>
-      <p>Fügen Sie Ihre erste Gewohnheit hinzu, um zu beginnen!</p>
+        <div class="habit-content">
+          <div class="habit-title">{{ habit.title }}</div>
+          <div class="habit-meta">
+            <span class="habit-streak" *ngIf="habit.streak_count > 0">
+              <ion-icon name="flame"></ion-icon>
+              {{ habit.streak_count }} Tage
+            </span>
+            <span class="habit-time" *ngIf="habit.reminder_time">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ habit.reminder_time }}
+            </span>
+          </div>
+        </div>
+
+        <div class="habit-status" *ngIf="habit.completedToday">
+          <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="(todaysHabits$ | async)?.length === 0">
+        <div class="empty-icon">
+          <ion-icon name="checkbox-outline"></ion-icon>
+        </div>
+        <h3>Noch keine Gewohnheiten</h3>
+        <p>Starte deine Reise zu besseren Gewohnheiten!</p>
+      </div>
     </div>
   </div>
 
   <!-- Floating Action Button -->
-  <ion-fab vertical="bottom" horizontal="end">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="openAddHabitAlert()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
@@ -61,11 +113,9 @@
   <ion-alert
     [isOpen]="isAlertOpen"
     header="Neue Gewohnheit"
-    message="Erstellen Sie eine neue Gewohnheit"
     [inputs]="alertInputs"
     [buttons]="alertButtons"
-  >
-  </ion-alert>
+  ></ion-alert>
 
   <!-- Toast for notifications -->
   <ion-toast
@@ -74,6 +124,5 @@
     [duration]="3000"
     position="bottom"
     (didDismiss)="isToastOpen = false"
-  >
-  </ion-toast>
+  ></ion-toast>
 </ion-content>
