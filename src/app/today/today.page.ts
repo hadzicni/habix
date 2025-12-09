@@ -134,7 +134,15 @@ export class TodayPage implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
   ) {
-    addIcons({ add, checkmarkCircle, ellipsisVertical, flame, timeOutline, checkboxOutline, trash });
+    addIcons({
+      add,
+      checkmarkCircle,
+      ellipsisVertical,
+      flame,
+      timeOutline,
+      checkboxOutline,
+      trash,
+    });
     this.todaysHabits$ = this.habitService.getTodaysHabits();
   }
 
@@ -163,7 +171,9 @@ export class TodayPage implements OnInit {
         Haptics.impact({ style: ImpactStyle.Medium });
 
         // Get updated stats for notifications
-        const stats = await this.habitService.getHabitStatistics(this.selectedHabit!.id!).toPromise();
+        const stats = await this.habitService
+          .getHabitStatistics(this.selectedHabit!.id!)
+          .toPromise();
 
         if (stats) {
           // Schedule encouragement notification for milestones
@@ -183,7 +193,8 @@ export class TodayPage implements OnInit {
         this.selectedHabit = null;
       },
     });
-  }  private completeHabitWithoutNote() {
+  }
+  private completeHabitWithoutNote() {
     if (!this.selectedHabit) return;
     this.completeHabitWithNote();
   }
