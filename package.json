@@ -71,5 +71,5 @@
     "prettier": "^3.7.4",
     "typescript": "~5.9.0"
   },
-  "description": "An Ionic project"
+  "description": "Habix - Habit Tracker App built with Ionic Angular and Supabase"
 }
