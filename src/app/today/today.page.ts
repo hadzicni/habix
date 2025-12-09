@@ -32,7 +32,6 @@ import {
 } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Habit } from 'src/app/interfaces/habit.interface';
-import { ConfettiService } from 'src/app/services/confetti.service';
 import { HabitService } from 'src/app/services/habit.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -133,7 +132,6 @@ export class TodayPage implements OnInit {
   constructor(
     private habitService: HabitService,
     private notificationService: NotificationService,
-    private confettiService: ConfettiService,
     private router: Router,
   ) {
     addIcons({ add, checkmarkCircle, ellipsisVertical, flame, timeOutline, checkboxOutline, trash });
@@ -162,8 +160,6 @@ export class TodayPage implements OnInit {
       next: async () => {
         this.showToast(`${this.selectedHabit!.title} completed! 🎉`);
 
-        // Show confetti for every completion (subtle version)
-        this.confettiService.createConfetti(1500);
         Haptics.impact({ style: ImpactStyle.Medium });
 
         // Get updated stats for notifications
