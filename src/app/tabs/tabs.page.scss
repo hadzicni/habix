@@ -86,11 +86,11 @@ ion-tab-button {
     &:hover:not(.tab-selected) {
       background: rgba(100, 116, 139, 0.15);
       transform: translateY(-1px);
-      
+
       ion-icon {
         transform: scale(1.05) translateY(-1px);
       }
-      
+
       ion-label {
         opacity: 1;
       }
