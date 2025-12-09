@@ -31,7 +31,7 @@ ion-tab-button {
   --background-focused-opacity: 0;
   --ripple-color: transparent;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-direction: column;
   height: auto;
   min-height: 0;
@@ -39,11 +39,13 @@ ion-tab-button {
   border-radius: 14px;
   margin: 0;
   background: rgba(100, 116, 139, 0.08);
+  position: relative;
+  overflow: visible;
 
   ion-icon {
     font-size: 20px;
     margin-bottom: 2px;
-    transition: transform 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   ion-label {
@@ -54,18 +56,71 @@ ion-tab-button {
     display: block;
     margin-top: 0;
     line-height: 1.2;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.7;
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 
   &.tab-selected {
     background: rgba(100, 116, 139, 0.12);
+    animation: tabPulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     ion-icon {
-      transform: scale(1.1);
+      transform: scale(1.1) translateY(-2px);
       color: var(--ion-tab-bar-color-selected);
+      animation: iconBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 2px 4px var(--ion-tab-bar-color-selected));
     }
 
     ion-label {
       color: var(--ion-tab-bar-color-selected);
+      opacity: 1;
+      transform: scale(1.05);
     }
+  }
+
+  @media (hover: hover) {
+    &:hover:not(.tab-selected) {
+      background: rgba(100, 116, 139, 0.15);
+      transform: translateY(-1px);
+      
+      ion-icon {
+        transform: scale(1.05) translateY(-1px);
+      }
+      
+      ion-label {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@keyframes tabPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes iconBounce {
+  0% {
+    transform: scale(0.9) translateY(0);
+  }
+  40% {
+    transform: scale(1.15) translateY(-3px);
+  }
+  60% {
+    transform: scale(1.05) translateY(-2px);
+  }
+  100% {
+    transform: scale(1.1) translateY(-2px);
   }
 }
