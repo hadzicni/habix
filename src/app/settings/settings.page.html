@@ -37,17 +37,17 @@
         <ion-radio-group [(ngModel)]="themeMode" (ionChange)="onThemeChange($event)">
           <div class="theme-option">
             <ion-radio value="light" labelPlacement="start" justify="space-between">
-              Hell
+              Light
             </ion-radio>
           </div>
           <div class="theme-option">
             <ion-radio value="dark" labelPlacement="start" justify="space-between">
-              Dunkel
+              Dark
             </ion-radio>
           </div>
           <div class="theme-option">
             <ion-radio value="system" labelPlacement="start" justify="space-between">
-              Geräteeinstellungen nutzen
+              System Default
             </ion-radio>
           </div>
         </ion-radio-group>
@@ -69,7 +69,17 @@
             <div class="setting-title">Push Notifications</div>
             <div class="setting-description">Reminders for your habits</div>
           </div>
-          <ion-toggle></ion-toggle>
+          <ion-toggle
+            [(ngModel)]="notificationsEnabled"
+            (ionChange)="onNotificationsToggle($event)"
+          ></ion-toggle>
+        </div>
+
+        <div class="setting-item">
+          <ion-button expand="block" fill="outline" size="small" (click)="testNotification()">
+            <ion-icon name="notifications-outline" slot="start"></ion-icon>
+            Test Notification
+          </ion-button>
         </div>
       </div>
     </div>

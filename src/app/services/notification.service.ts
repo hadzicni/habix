@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import {
-  LocalNotifications,
-  ScheduleOptions,
-} from '@capacitor/local-notifications';
+import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
 import { Habit } from '../interfaces/habit.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
+  private notificationId = 1;
+
   constructor() {
     this.initializeNotifications();
   }
@@ -16,6 +15,20 @@ export class NotificationService {
   private async initializeNotifications() {
     // Request permission for notifications
     await LocalNotifications.requestPermissions();
+  }
+
+  async sendTestNotification(): Promise<void> {
+    await LocalNotifications.requestPermissions();
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: this.notificationId++,
+          title: 'Test Notification',
+          body: 'This is a test notification from Habix! 🎉',
+          schedule: { at: new Date(Date.now() + 100) },
+        },
+      ],
+    });
   }
 
   async scheduleHabitReminder(habit: Habit): Promise<void> {
@@ -26,11 +39,14 @@ export class NotificationService {
     // Parse reminder time (assuming format "HH:MM")
     const [hours, minutes] = habit.reminder_time.split(':').map(Number);
 
+    // Generate unique notification ID from habit.id string
+    const notificationId = this.generateNotificationId(habit.id!);
+
     // Create schedule for daily notifications
     const schedule: ScheduleOptions = {
       notifications: [
         {
-          id: parseInt(habit.id!) || Date.now(),
+          id: notificationId,
           title: 'Habit Reminder',
           body: `Time to complete: ${habit.title}`,
           schedule: {
@@ -47,10 +63,20 @@ export class NotificationService {
     await LocalNotifications.schedule(schedule);
   }
 
+  private generateNotificationId(habitId: string): number {
+    // Convert string to a consistent numeric ID
+    let hash = 0;
+    for (let i = 0; i < habitId.length; i++) {
+      hash = (hash << 5) - hash + habitId.charCodeAt(i);
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
+  }
+
   async cancelHabitReminder(habitId: string): Promise<void> {
     const notifications = await LocalNotifications.getPending();
     const habitNotifications = notifications.notifications.filter(
-      (n) => n.extra?.habitId === habitId
+      (n) => n.extra?.habitId === habitId,
     );
 
     if (habitNotifications.length > 0) {
@@ -70,10 +96,7 @@ export class NotificationService {
     }
   }
 
-  async scheduleEncouragementNotification(
-    habitTitle: string,
-    streakCount: number
-  ): Promise<void> {
+  async scheduleEncouragementNotification(habitTitle: string, streakCount: number): Promise<void> {
     let message = '';
 
     if (streakCount === 1) {
