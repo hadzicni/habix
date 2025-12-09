@@ -91,9 +91,9 @@
   --ion-item-background: transparent;
   --ion-item-border-color: #e2e8f0;
 
-  // Tab bar
-  --ion-tab-bar-background: #ffffff;
-  --ion-tab-bar-border-color: #e2e8f0;
+  // Tab bar - Modern Glassmorphism
+  --ion-tab-bar-background: rgba(255, 255, 255, 0.85);
+  --ion-tab-bar-border-color: rgba(226, 232, 240, 0.8);
   --ion-tab-bar-color: #64748b;
   --ion-tab-bar-color-selected: #667eea;
 }
@@ -177,8 +177,8 @@ body.dark {
   --ion-item-background: transparent;
   --ion-item-border-color: #334155;
 
-  --ion-tab-bar-background: #1e293b;
-  --ion-tab-bar-border-color: #334155;
+  --ion-tab-bar-background: rgba(30, 41, 59, 0.85);
+  --ion-tab-bar-border-color: rgba(51, 65, 85, 0.8);
   --ion-tab-bar-color: #94a3b8;
   --ion-tab-bar-color-selected: #818cf8;
 }
