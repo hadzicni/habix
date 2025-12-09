@@ -24,16 +24,33 @@
       </div>
 
       <div class="settings-card">
-        <div class="setting-item">
+        <div class="setting-item-header">
           <div class="setting-icon">
             <ion-icon name="moon-outline"></ion-icon>
           </div>
           <div class="setting-content">
-            <div class="setting-title">Dark Mode</div>
-            <div class="setting-description">Enable dark theme</div>
+            <div class="setting-title">Theme</div>
+            <div class="setting-description">Choose your preferred theme</div>
           </div>
-          <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode($event)"></ion-toggle>
         </div>
+
+        <ion-radio-group [(ngModel)]="themeMode" (ionChange)="onThemeChange($event)">
+          <div class="theme-option">
+            <ion-radio value="light" labelPlacement="start" justify="space-between">
+              Hell
+            </ion-radio>
+          </div>
+          <div class="theme-option">
+            <ion-radio value="dark" labelPlacement="start" justify="space-between">
+              Dunkel
+            </ion-radio>
+          </div>
+          <div class="theme-option">
+            <ion-radio value="system" labelPlacement="start" justify="space-between">
+              Geräteeinstellungen nutzen
+            </ion-radio>
+          </div>
+        </ion-radio-group>
       </div>
     </div>
 

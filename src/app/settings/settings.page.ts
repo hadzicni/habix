@@ -6,6 +6,8 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonRadio,
+  IonRadioGroup,
   IonRefresher,
   IonRefresherContent,
   IonTitle,
@@ -21,7 +23,7 @@ import {
   notificationsOutline,
   reloadOutline,
 } from 'ionicons/icons';
-import { ThemeService } from 'src/app/services/theme.service';
+import { ThemeMode, ThemeService } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-settings',
@@ -36,12 +38,14 @@ import { ThemeService } from 'src/app/services/theme.service';
     FormsModule,
     IonIcon,
     IonToggle,
+    IonRadioGroup,
+    IonRadio,
     IonRefresher,
     IonRefresherContent,
   ],
 })
 export class SettingsPage implements OnInit {
-  darkMode: boolean = false;
+  themeMode: ThemeMode = 'system';
 
   constructor(
     private themeService: ThemeService,
@@ -62,11 +66,11 @@ export class SettingsPage implements OnInit {
   }
 
   async loadThemePreference() {
-    this.darkMode = await this.themeService.isDarkMode();
+    this.themeMode = await this.themeService.getThemeMode();
   }
 
-  toggleDarkMode(event: any) {
-    this.themeService.setDarkMode(event.detail.checked);
+  onThemeChange(event: any) {
+    this.themeService.setThemeMode(event.detail.value as ThemeMode);
   }
 
   restartOnboarding() {
