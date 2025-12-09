@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Habitify</string>
-    <string name="title_activity_main">Habitify</string>
-    <string name="package_name">com.hadzicni.habitify</string>
-    <string name="custom_url_scheme">com.hadzicni.habitifyr</string>
+    <string name="app_name">Habix</string>
+    <string name="title_activity_main">Habix</string>
+    <string name="package_name">com.hadzicni.habix</string>
+    <string name="custom_url_scheme">com.hadzicni.habixr</string>
 </resources>
