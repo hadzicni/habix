@@ -8,8 +8,8 @@ ion-tab-bar {
   --background: var(--ion-tab-bar-background);
   --border: none;
   border: none;
-  padding: 6px 6px;
-  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0));
+  padding: 4px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom, 0));
   height: auto;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -18,13 +18,15 @@ ion-tab-bar {
   border-radius: 20px;
   contain: none;
   overflow: hidden;
+  display: flex;
+  gap: 4px;
 }
 
 ion-tab-button {
   --color: var(--ion-tab-bar-color);
   --color-selected: var(--ion-tab-bar-color-selected);
-  --padding-top: 6px;
-  --padding-bottom: 6px;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
   --background-focused: transparent;
   --background-focused-opacity: 0;
   --ripple-color: transparent;
@@ -32,24 +34,26 @@ ion-tab-button {
   transition: all 0.2s ease;
   flex-direction: column;
   height: auto;
+  min-height: 0;
   border: none;
   border-radius: 14px;
-  margin: 0 3px;
+  margin: 0;
   background: rgba(100, 116, 139, 0.08);
 
   ion-icon {
-    font-size: 22px;
-    margin-bottom: 3px;
+    font-size: 20px;
+    margin-bottom: 2px;
     transition: transform 0.2s ease;
   }
 
   ion-label {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     display: block;
     margin-top: 0;
+    line-height: 1.2;
   }
 
   &.tab-selected {
