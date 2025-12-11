@@ -11,8 +11,7 @@ import {
   flameOutline,
   notificationsOutline,
   personOutline,
-  statsChartOutline,
-} from 'ionicons/icons';
+  statsChartOutline, chevronBackOutline, rocketOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-onboarding',
@@ -67,15 +66,7 @@ export class OnboardingPage {
   ];
 
   constructor(private router: Router) {
-    addIcons({
-      arrowBackOutline,
-      arrowForwardOutline,
-      checkmarkCircleOutline,
-      flameOutline,
-      statsChartOutline,
-      notificationsOutline,
-      personOutline,
-    });
+    addIcons({chevronBackOutline,arrowForwardOutline,rocketOutline,arrowBackOutline,checkmarkCircleOutline,flameOutline,statsChartOutline,notificationsOutline,personOutline,});
   }
 
   ngAfterViewInit() {

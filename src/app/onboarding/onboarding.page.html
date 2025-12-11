@@ -41,21 +41,27 @@
 
     <!-- Navigation Buttons -->
     <div class="navigation-buttons">
-      @if (currentSlide > 0 && !isLastSlide) {
-      <ion-button fill="outline" (click)="previousSlide()" class="back-button">
-        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-        Back
-      </ion-button>
-      } @if (!isLastSlide) {
-      <ion-button expand="block" (click)="nextSlide()" class="next-button">
-        Next
-        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-      </ion-button>
-      } @if (isLastSlide) {
-      <ion-button expand="block" (click)="finishOnboarding()" class="finish-button">
-        Get Started
-      </ion-button>
-      }
+      <div class="button-left">
+        @if (currentSlide > 0) {
+        <ion-button fill="clear" (click)="previousSlide()" class="back-button">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+        }
+      </div>
+      
+      <div class="button-right">
+        @if (!isLastSlide) {
+        <ion-button (click)="nextSlide()" class="next-button">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+        } @else {
+        <ion-button (click)="finishOnboarding()" class="finish-button">
+          <ion-icon slot="start" name="rocket-outline"></ion-icon>
+          Get Started
+        </ion-button>
+        }
+      </div>
     </div>
   </div>
 </ion-content>
