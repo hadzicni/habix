@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // Check network status on startup
+    // Check network status on startup 
     const isOnline = await this.networkService.isOnline();
     if (!isOnline) {
       this.showOfflineToast();

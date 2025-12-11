@@ -410,82 +410,12 @@ export class HabitService {
         streak_count: 0,
       },
       {
-        title: 'Meditation',
-        description: 'Meditate for 10 minutes',
-        icon: 'planet',
-        color: '#764ba2',
-        reminder_time: '06:30',
-        reminder_enabled: false,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
         title: 'Drink Water',
         description: 'Drink 8 glasses of water',
         icon: 'water',
         color: '#3b82f6',
         reminder_time: '09:00',
         reminder_enabled: true,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
-        title: 'Learn German',
-        description: 'Practice German for 15 minutes',
-        icon: 'school',
-        color: '#f59e0b',
-        reminder_time: '18:00',
-        reminder_enabled: false,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
-        title: 'Healthy Breakfast',
-        description: 'Eat a nutritious breakfast every day',
-        icon: 'restaurant',
-        color: '#f97316',
-        reminder_time: '08:00',
-        reminder_enabled: true,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
-        title: 'No Social Media',
-        description: 'Avoid social media for 1 hour before bed',
-        icon: 'phone-portrait-outline',
-        color: '#ef4444',
-        reminder_time: '21:00',
-        reminder_enabled: true,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
-        title: 'Journal Writing',
-        description: 'Write in journal for 10 minutes',
-        icon: 'pencil',
-        color: '#8b5cf6',
-        reminder_time: '22:00',
-        reminder_enabled: false,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
-        title: 'Walk 10k Steps',
-        description: 'Walk at least 10,000 steps daily',
-        icon: 'walk',
-        color: '#06b6d4',
-        reminder_time: '17:00',
-        reminder_enabled: true,
-        is_active: true,
-        streak_count: 0,
-      },
-      {
-        title: 'Practice Guitar',
-        description: 'Practice guitar for 30 minutes',
-        icon: 'musical-notes',
-        color: '#ec4899',
-        reminder_time: '19:00',
-        reminder_enabled: false,
         is_active: true,
         streak_count: 0,
       },
@@ -500,7 +430,7 @@ export class HabitService {
       }
     }
 
-    // Generate completions for the last 90 days
+    // Generate completions for the last 50 days (targeting ~150 completions)
     const today = new Date();
     const allCompletions: HabitCompletion[] = [];
 
@@ -508,7 +438,7 @@ export class HabitService {
       // Random success rate between 60-95%
       const successRate = 0.6 + Math.random() * 0.35;
 
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 50; i++) {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
 
