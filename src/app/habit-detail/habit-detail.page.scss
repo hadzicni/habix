@@ -18,8 +18,9 @@ ion-item {
   --inner-padding-end: 20px;
   margin-bottom: 16px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06),
-              0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -61,13 +62,11 @@ ion-textarea {
 
     &.save-button {
       --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35),
-                    0 2px 6px rgba(0, 0, 0, 0.1);
+      --box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35), 0 2px 6px rgba(0, 0, 0, 0.1);
 
       &:active {
         transform: scale(0.97);
-        --box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3),
-                      0 2px 4px rgba(0, 0, 0, 0.08);
+        --box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3), 0 2px 4px rgba(0, 0, 0, 0.08);
       }
     }
 
@@ -121,8 +120,9 @@ body.dark ion-item {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-color: transparent;
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 6px 16px rgba(102, 126, 234, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
     ion-icon {
       color: white;
@@ -145,8 +145,9 @@ body.dark ion-item {
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
   ion-icon {
     font-size: 24px;
@@ -159,8 +160,9 @@ body.dark ion-item {
   &.selected {
     border-color: var(--ion-color-dark);
     transform: scale(1.15);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
 
     ion-icon {
       opacity: 1;

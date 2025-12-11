@@ -23,8 +23,9 @@
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06),
-              0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -54,8 +55,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 6px 16px rgba(102, 126, 234, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: transform 0.3s ease;
 
   ion-icon {
@@ -66,14 +68,16 @@
 
   &.flame {
     background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 6px 16px rgba(245, 158, 11, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 
   &.trophy {
     background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 6px 16px rgba(16, 185, 129, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -118,8 +122,9 @@
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06),
-              0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.05);
   animation: fadeIn 0.3s ease-out;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
