@@ -527,8 +527,25 @@ export class HabitService {
       }
 
       // Save completions
+      const isOnline = await this.networkService.isOnline();
       for (const completion of completions) {
-        await this.storageService.saveHabitCompletion(completion);
+        // Add ID to completion
+        const completionWithId = {
+          ...completion,
+          id: crypto.randomUUID(),
+        };
+
+        // Save to Supabase if online
+        if (isOnline) {
+          try {
+            await this.supabase.from('habit_completions').insert([completionWithId]);
+          } catch (error) {
+            console.error('Error saving completion to Supabase:', error);
+          }
+        }
+
+        // Always save locally
+        await this.storageService.saveHabitCompletion(completionWithId);
       }
     }
 
