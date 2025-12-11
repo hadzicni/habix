@@ -80,7 +80,11 @@ export class TodayPage implements OnInit {
     {
       name: 'note',
       type: 'textarea' as const,
-      placeholder: 'Add a note (optional)...',
+      placeholder: 'How did it go? Any thoughts or achievements?',
+      attributes: {
+        maxlength: 500,
+        rows: 4,
+      },
     },
   ];
   noteAlertButtons = [

@@ -18,6 +18,7 @@ import {
   IonTitle,
   IonToggle,
   IonToolbar,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -127,6 +128,7 @@ export class HabitDetailPage implements OnInit {
     private habitService: HabitService,
     private notificationService: NotificationService,
     private alertController: AlertController,
+    private toastController: ToastController,
   ) {
     addIcons({
       saveOutline,
@@ -222,6 +224,14 @@ export class HabitDetailPage implements OnInit {
 
   async saveHabit() {
     if (!this.habit.title?.trim()) {
+      const toast = await this.toastController.create({
+        message: 'Please enter a habit name',
+        duration: 2000,
+        color: 'warning',
+        position: 'top',
+        icon: 'alert-circle-outline',
+      });
+      await toast.present();
       return;
     }
 
@@ -242,6 +252,14 @@ export class HabitDetailPage implements OnInit {
           if (createdHabit.reminder_enabled && createdHabit.reminder_time) {
             await this.notificationService.scheduleHabitReminder(createdHabit);
           }
+          const toast = await this.toastController.create({
+            message: 'Habit created successfully!',
+            duration: 2000,
+            color: 'success',
+            position: 'top',
+            icon: 'checkmark-circle-outline',
+          });
+          await toast.present();
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
@@ -261,6 +279,14 @@ export class HabitDetailPage implements OnInit {
             await this.notificationService.scheduleHabitReminder(updatedHabit);
           }
 
+          const toast = await this.toastController.create({
+            message: 'Habit updated successfully!',
+            duration: 2000,
+            color: 'success',
+            position: 'top',
+            icon: 'checkmark-circle-outline',
+          });
+          await toast.present();
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
@@ -274,8 +300,9 @@ export class HabitDetailPage implements OnInit {
     if (!this.habitId) return;
 
     const alert = await this.alertController.create({
-      header: 'Delete Habit',
-      message: 'Are you sure you want to delete this habit? This action cannot be undone.',
+      header: 'Delete Habit?',
+      subHeader: this.habit.title || '',
+      message: 'This will permanently delete all data including history and statistics. This action cannot be undone.',
       buttons: [
         {
           text: 'Cancel',

@@ -41,6 +41,12 @@
 
     <!-- Navigation Buttons -->
     <div class="navigation-buttons">
+      @if (currentSlide > 0 && !isLastSlide) {
+      <ion-button fill="outline" (click)="previousSlide()" class="back-button">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Back
+      </ion-button>
+      }
       @if (!isLastSlide) {
       <ion-button expand="block" (click)="nextSlide()" class="next-button">
         Next

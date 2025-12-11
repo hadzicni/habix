@@ -309,16 +309,6 @@ ion-fab-button {
   ion-icon {
     font-size: 28px;
   }
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    opacity: 0;
-    animation: pulse 2s ease-in-out infinite;
-  }
 }
 
 // Animations
@@ -363,17 +353,6 @@ ion-fab-button {
   }
   50% {
     transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
   }
 }
 
