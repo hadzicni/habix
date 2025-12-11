@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { Habit } from '../interfaces/habit.interface';
 
 @Injectable({
