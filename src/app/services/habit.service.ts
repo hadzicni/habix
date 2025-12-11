@@ -502,9 +502,9 @@ export class HabitService {
 
     // Generate completions for the last 90 days
     const today = new Date();
-    for (const habit of createdHabits) {
-      const completions: HabitCompletion[] = [];
+    const allCompletions: HabitCompletion[] = [];
 
+    for (const habit of createdHabits) {
       // Random success rate between 60-95%
       const successRate = 0.6 + Math.random() * 0.35;
 
@@ -518,35 +518,34 @@ export class HabitService {
           date.setHours(Math.floor(Math.random() * 12) + 8); // Between 8am and 8pm
           date.setMinutes(Math.floor(Math.random() * 60));
 
-          completions.push({
+          allCompletions.push({
+            id: crypto.randomUUID(),
             habit_id: habit.id!,
             completed_at: date,
             notes: '',
           });
         }
       }
+    }
 
-      // Save completions
-      const isOnline = await this.networkService.isOnline();
-      for (const completion of completions) {
-        // Add ID to completion
-        const completionWithId = {
-          ...completion,
-          id: crypto.randomUUID(),
-        };
-
-        // Save to Supabase if online
-        if (isOnline) {
-          try {
-            await this.supabase.from('habit_completions').insert([completionWithId]);
-          } catch (error) {
-            console.error('Error saving completion to Supabase:', error);
-          }
+    // Batch save all completions
+    const isOnline = await this.networkService.isOnline();
+    if (isOnline && allCompletions.length > 0) {
+      try {
+        // Insert in batches of 100 to avoid timeout
+        const batchSize = 100;
+        for (let i = 0; i < allCompletions.length; i += batchSize) {
+          const batch = allCompletions.slice(i, i + batchSize);
+          await this.supabase.from('habit_completions').insert(batch);
         }
-
-        // Always save locally
-        await this.storageService.saveHabitCompletion(completionWithId);
+      } catch (error) {
+        console.error('Error saving completions to Supabase:', error);
       }
+    }
+
+    // Save locally (batch operation)
+    for (const completion of allCompletions) {
+      await this.storageService.saveHabitCompletion(completion);
     }
 
     // Trigger refresh
