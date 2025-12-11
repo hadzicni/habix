@@ -17,18 +17,36 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonTitle,
-  IonToast,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   add,
+  barbell,
+  bed,
+  bicycle,
+  book,
+  brush,
   checkboxOutline,
   checkmarkCircle,
   ellipsisVertical,
+  fitness,
   flame,
+  heart,
+  leaf,
+  medkit,
+  moon,
+  musicalNotes,
+  pencil,
+  phonePortraitOutline,
+  planet,
+  restaurant,
+  school,
+  sunny,
   timeOutline,
   trash,
+  walk,
+  water,
 } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Habit } from 'src/app/interfaces/habit.interface';
@@ -41,7 +59,6 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['today.page.scss'],
   imports: [
     CommonModule,
-    IonToast,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -62,8 +79,6 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class TodayPage implements OnInit {
   todaysHabits$: Observable<(Habit & { completedToday: boolean })[]>;
   isAlertOpen = false;
-  isToastOpen = false;
-  toastMessage = '';
   userName: string = '';
 
   // Note dialog state
@@ -142,6 +157,26 @@ export class TodayPage implements OnInit {
       timeOutline,
       checkboxOutline,
       trash,
+      // Habit icons
+      barbell,
+      book,
+      water,
+      bed,
+      restaurant,
+      fitness,
+      leaf,
+      moon,
+      sunny,
+      walk,
+      bicycle,
+      medkit,
+      brush,
+      musicalNotes,
+      heart,
+      planet,
+      school,
+      pencil,
+      phonePortraitOutline,
     });
     this.todaysHabits$ = this.habitService.getTodaysHabits();
   }
@@ -166,8 +201,6 @@ export class TodayPage implements OnInit {
 
     this.habitService.completeHabit(this.selectedHabit.id!, note).subscribe({
       next: async () => {
-        this.showToast(`${this.selectedHabit!.title} completed! 🎉`);
-
         Haptics.impact({ style: ImpactStyle.Medium });
 
         // Get updated stats for notifications
@@ -189,7 +222,6 @@ export class TodayPage implements OnInit {
       },
       error: (error) => {
         console.error('Error completing habit:', error);
-        this.showToast('Error completing habit. Please try again.');
         this.selectedHabit = null;
       },
     });
@@ -226,11 +258,10 @@ export class TodayPage implements OnInit {
 
     this.habitService.deleteHabit(habitId).subscribe({
       next: () => {
-        this.showToast('Habit deleted');
+        // Habit deleted
       },
       error: (error) => {
         console.error('Error deleting habit:', error);
-        this.showToast('Error deleting habit. Please try again.');
       },
     });
   }
@@ -251,7 +282,6 @@ export class TodayPage implements OnInit {
 
       this.habitService.createHabit(habitData).subscribe({
         next: (habit) => {
-          this.showToast(`${habit.title} created successfully!`);
           // Reset form
           this.newHabit = {
             title: '',
@@ -264,7 +294,6 @@ export class TodayPage implements OnInit {
         },
         error: (error) => {
           console.error('Error creating habit:', error);
-          this.showToast('Error creating habit. Please try again.');
         },
       });
     }
@@ -289,11 +318,6 @@ export class TodayPage implements OnInit {
     this.newHabit.reminder_time = data.reminderTime || '';
     this.newHabit.reminderEnabled = !!data.reminderTime;
     this.onAddHabitConfirm();
-  }
-
-  private showToast(message: string) {
-    this.toastMessage = message;
-    this.isToastOpen = true;
   }
 
   getTodayDate(): string {
@@ -346,7 +370,6 @@ export class TodayPage implements OnInit {
     // Wait a bit for the data to load
     setTimeout(() => {
       event.target.complete();
-      this.showToast('Habits refreshed');
     }, 1000);
   }
 }

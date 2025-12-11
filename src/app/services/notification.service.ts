@@ -31,6 +31,20 @@ export class NotificationService {
     });
   }
 
+  async sendTestHabitReminder(): Promise<void> {
+    await LocalNotifications.requestPermissions();
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: this.notificationId++,
+          title: 'Habit Reminder',
+          body: 'Time to complete: Morning Exercise 🏃',
+          schedule: { at: new Date(Date.now() + 5000) }, // 5 seconds from now
+        },
+      ],
+    });
+  }
+
   async scheduleHabitReminder(habit: Habit): Promise<void> {
     if (!habit.reminder_enabled || !habit.reminder_time) {
       return;
@@ -42,25 +56,33 @@ export class NotificationService {
     // Generate unique notification ID from habit.id string
     const notificationId = this.generateNotificationId(habit.id!);
 
-    // Create schedule for daily notifications
-    const schedule: ScheduleOptions = {
+    // Calculate the next occurrence of this time
+    const now = new Date();
+    const scheduledTime = new Date();
+    scheduledTime.setHours(hours, minutes, 0, 0);
+
+    // If the time has already passed today, schedule for tomorrow
+    if (scheduledTime <= now) {
+      scheduledTime.setDate(scheduledTime.getDate() + 1);
+    }
+
+    // Schedule notification at specific time
+    await LocalNotifications.schedule({
       notifications: [
         {
           id: notificationId,
           title: 'Habit Reminder',
           body: `Time to complete: ${habit.title}`,
           schedule: {
+            at: scheduledTime,
             every: 'day',
-            at: new Date(new Date().setHours(hours, minutes, 0, 0)),
           },
           extra: {
             habitId: habit.id,
           },
         },
       ],
-    };
-
-    await LocalNotifications.schedule(schedule);
+    });
   }
 
   private generateNotificationId(habitId: string): number {

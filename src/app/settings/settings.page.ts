@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
+  AlertController,
   IonButton,
   IonContent,
   IonHeader,
@@ -14,16 +15,22 @@ import {
   IonTitle,
   IonToggle,
   IonToolbar,
+  LoadingController,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  alarmOutline,
   chevronForwardOutline,
   codeSlashOutline,
+  flaskOutline,
   informationCircleOutline,
   moonOutline,
   notificationsOutline,
   reloadOutline,
+  trashOutline,
 } from 'ionicons/icons';
+import { HabitService } from 'src/app/services/habit.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { ThemeMode, ThemeService } from 'src/app/services/theme.service';
@@ -56,7 +63,11 @@ export class SettingsPage implements OnInit {
     private themeService: ThemeService,
     private storageService: StorageService,
     private notificationService: NotificationService,
+    private habitService: HabitService,
     private router: Router,
+    private loadingController: LoadingController,
+    private toastController: ToastController,
+    private alertController: AlertController,
   ) {
     addIcons({
       moonOutline,
@@ -65,6 +76,9 @@ export class SettingsPage implements OnInit {
       codeSlashOutline,
       reloadOutline,
       chevronForwardOutline,
+      flaskOutline,
+      trashOutline,
+      alarmOutline,
     });
   }
 
@@ -97,6 +111,17 @@ export class SettingsPage implements OnInit {
     await this.notificationService.sendTestNotification();
   }
 
+  async testHabitReminder() {
+    await this.notificationService.sendTestHabitReminder();
+    const toast = await this.toastController.create({
+      message: 'Habit reminder will appear in 5 seconds...',
+      duration: 2000,
+      color: 'primary',
+      position: 'top',
+    });
+    await toast.present();
+  }
+
   restartOnboarding() {
     localStorage.removeItem('hasCompletedOnboarding');
     this.router.navigate(['/welcome']);
@@ -108,5 +133,98 @@ export class SettingsPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
     }, 500);
+  }
+
+  async generateTestData() {
+    const alert = await this.alertController.create({
+      header: 'Generate Test Data',
+      message: 'This will create 10 sample habits with 90 days of random completions. Continue?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Generate',
+          handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Generating test data...',
+            });
+            await loading.present();
+
+            try {
+              await this.habitService.generateTestData();
+              await loading.dismiss();
+
+              const toast = await this.toastController.create({
+                message: '✅ Test data generated successfully!',
+                duration: 3000,
+                color: 'success',
+                position: 'top',
+              });
+              await toast.present();
+            } catch (error) {
+              await loading.dismiss();
+              const toast = await this.toastController.create({
+                message: '❌ Error generating test data',
+                duration: 3000,
+                color: 'danger',
+                position: 'top',
+              });
+              await toast.present();
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async clearAllData() {
+    const alert = await this.alertController.create({
+      header: 'Clear All Data',
+      message: 'This will permanently delete all habits and completions. This cannot be undone!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Clearing all data...',
+            });
+            await loading.present();
+
+            try {
+              await this.habitService.clearAllData();
+              await loading.dismiss();
+
+              const toast = await this.toastController.create({
+                message: '✅ All data cleared successfully!',
+                duration: 3000,
+                color: 'success',
+                position: 'top',
+              });
+              await toast.present();
+            } catch (error) {
+              await loading.dismiss();
+              const toast = await this.toastController.create({
+                message: '❌ Error clearing data',
+                duration: 3000,
+                color: 'danger',
+                position: 'top',
+              });
+              await toast.present();
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

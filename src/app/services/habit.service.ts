@@ -397,6 +397,7 @@ export class HabitService {
         reminder_time: '07:00',
         reminder_enabled: true,
         is_active: true,
+        streak_count: 0,
       },
       {
         title: 'Read Book',
@@ -406,6 +407,7 @@ export class HabitService {
         reminder_time: '20:00',
         reminder_enabled: true,
         is_active: true,
+        streak_count: 0,
       },
       {
         title: 'Meditation',
@@ -415,6 +417,7 @@ export class HabitService {
         reminder_time: '06:30',
         reminder_enabled: false,
         is_active: true,
+        streak_count: 0,
       },
       {
         title: 'Drink Water',
@@ -424,6 +427,7 @@ export class HabitService {
         reminder_time: '09:00',
         reminder_enabled: true,
         is_active: true,
+        streak_count: 0,
       },
       {
         title: 'Learn German',
@@ -433,6 +437,57 @@ export class HabitService {
         reminder_time: '18:00',
         reminder_enabled: false,
         is_active: true,
+        streak_count: 0,
+      },
+      {
+        title: 'Healthy Breakfast',
+        description: 'Eat a nutritious breakfast every day',
+        icon: 'restaurant',
+        color: '#f97316',
+        reminder_time: '08:00',
+        reminder_enabled: true,
+        is_active: true,
+        streak_count: 0,
+      },
+      {
+        title: 'No Social Media',
+        description: 'Avoid social media for 1 hour before bed',
+        icon: 'phone-portrait-outline',
+        color: '#ef4444',
+        reminder_time: '21:00',
+        reminder_enabled: true,
+        is_active: true,
+        streak_count: 0,
+      },
+      {
+        title: 'Journal Writing',
+        description: 'Write in journal for 10 minutes',
+        icon: 'pencil',
+        color: '#8b5cf6',
+        reminder_time: '22:00',
+        reminder_enabled: false,
+        is_active: true,
+        streak_count: 0,
+      },
+      {
+        title: 'Walk 10k Steps',
+        description: 'Walk at least 10,000 steps daily',
+        icon: 'walk',
+        color: '#06b6d4',
+        reminder_time: '17:00',
+        reminder_enabled: true,
+        is_active: true,
+        streak_count: 0,
+      },
+      {
+        title: 'Practice Guitar',
+        description: 'Practice guitar for 30 minutes',
+        icon: 'musical-notes',
+        color: '#ec4899',
+        reminder_time: '19:00',
+        reminder_enabled: false,
+        is_active: true,
+        streak_count: 0,
       },
     ];
 
@@ -449,20 +504,20 @@ export class HabitService {
     const today = new Date();
     for (const habit of createdHabits) {
       const completions: HabitCompletion[] = [];
-      
+
       // Random success rate between 60-95%
       const successRate = 0.6 + Math.random() * 0.35;
-      
+
       for (let i = 0; i < 90; i++) {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
-        
+
         // Randomly decide if habit was completed on this day
         if (Math.random() < successRate) {
           // Random time of day
           date.setHours(Math.floor(Math.random() * 12) + 8); // Between 8am and 8pm
           date.setMinutes(Math.floor(Math.random() * 60));
-          
+
           completions.push({
             habit_id: habit.id!,
             completed_at: date,
@@ -473,7 +528,7 @@ export class HabitService {
 
       // Save completions
       for (const completion of completions) {
-        await this.completeHabit(completion.habit_id, completion.completed_at).toPromise();
+        await this.storageService.saveHabitCompletion(completion);
       }
     }
 
@@ -485,7 +540,10 @@ export class HabitService {
   async clearAllData(): Promise<void> {
     // Clear from Supabase
     if (await this.networkService.isOnline()) {
-      await this.supabase.from('habit_completions').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await this.supabase
+        .from('habit_completions')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
       await this.supabase.from('habits').delete().neq('id', '00000000-0000-0000-0000-000000000000');
     }
 

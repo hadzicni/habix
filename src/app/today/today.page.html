@@ -160,13 +160,4 @@
     [buttons]="noteAlertButtons"
     (didDismiss)="isNoteAlertOpen = false"
   ></ion-alert>
-
-  <!-- Toast for notifications -->
-  <ion-toast
-    [isOpen]="isToastOpen"
-    [message]="toastMessage"
-    [duration]="3000"
-    position="bottom"
-    (didDismiss)="isToastOpen = false"
-  ></ion-toast>
 </ion-content>

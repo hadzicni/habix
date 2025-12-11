@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import {
-  AppSettings,
-  Habit,
-  HabitCompletion,
-} from '../interfaces/habit.interface';
+import { AppSettings, Habit, HabitCompletion } from '../interfaces/habit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -84,9 +80,7 @@ export class StorageService {
 
   async deleteHabitCompletions(habitId: string): Promise<void> {
     const allCompletions = await this.getAllHabitCompletions();
-    const updatedCompletions = allCompletions.filter(
-      (c) => c.habit_id !== habitId
-    );
+    const updatedCompletions = allCompletions.filter((c) => c.habit_id !== habitId);
 
     await Preferences.set({
       key: this.COMPLETIONS_KEY,
@@ -96,9 +90,7 @@ export class StorageService {
 
   async deleteCompletion(completionId: string): Promise<void> {
     const allCompletions = await this.getAllHabitCompletions();
-    const updatedCompletions = allCompletions.filter(
-      (c) => c.id !== completionId
-    );
+    const updatedCompletions = allCompletions.filter((c) => c.id !== completionId);
 
     await Preferences.set({
       key: this.COMPLETIONS_KEY,
@@ -122,9 +114,7 @@ export class StorageService {
         notifications_enabled: true,
       };
 
-      return result.value
-        ? { ...defaultSettings, ...JSON.parse(result.value) }
-        : defaultSettings;
+      return result.value ? { ...defaultSettings, ...JSON.parse(result.value) } : defaultSettings;
     } catch (error) {
       console.error('Error loading settings from storage:', error);
       return {

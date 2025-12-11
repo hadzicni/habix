@@ -81,6 +81,19 @@
             Test Notification
           </ion-button>
         </div>
+
+        <div class="setting-item">
+          <ion-button
+            expand="block"
+            fill="solid"
+            size="small"
+            color="primary"
+            (click)="testHabitReminder()"
+          >
+            <ion-icon name="alarm-outline" slot="start"></ion-icon>
+            Test Habit Reminder (5s)
+          </ion-button>
+        </div>
       </div>
     </div>
 
@@ -120,6 +133,36 @@
             <div class="info-value">View welcome screens again</div>
           </div>
           <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Developer Section -->
+    <div class="settings-section">
+      <div class="section-header">
+        <h3>Developer Tools</h3>
+      </div>
+
+      <div class="settings-card">
+        <div class="setting-item">
+          <ion-button expand="block" fill="solid" color="success" (click)="generateTestData()">
+            <ion-icon name="flask-outline" slot="start"></ion-icon>
+            Generate Test Data
+          </ion-button>
+        </div>
+
+        <div class="setting-item">
+          <ion-button expand="block" fill="outline" color="danger" (click)="clearAllData()">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Clear All Data
+          </ion-button>
+        </div>
+
+        <div class="developer-info">
+          <p>
+            Test data includes 10 sample habits with 90 days of random completions for demonstration
+            and testing purposes.
+          </p>
         </div>
       </div>
     </div>

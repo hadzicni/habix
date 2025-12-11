@@ -15,7 +15,6 @@ import {
   IonList,
   IonTextarea,
   IonTitle,
-  IonToast,
   IonToggle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -69,14 +68,11 @@ import { NotificationService } from '../services/notification.service';
     IonTextarea,
     IonToggle,
     IonIcon,
-    IonToast,
   ],
 })
 export class HabitDetailPage implements OnInit {
   habitId: string | null = null;
   isNewHabit = true;
-  isToastOpen = false;
-  toastMessage = '';
   completions: (HabitCompletion & { formattedDate?: string })[] = [];
 
   habit: Partial<Habit> = {
@@ -185,7 +181,6 @@ export class HabitDetailPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Error loading habit:', error);
-        this.showToast('Error loading habit');
       },
     });
   }
@@ -201,8 +196,9 @@ export class HabitDetailPage implements OnInit {
 
         // Sort by date (newest first) and format
         this.completions = completions
-          .sort((a: HabitCompletion, b: HabitCompletion) =>
-            new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime()
+          .sort(
+            (a: HabitCompletion, b: HabitCompletion) =>
+              new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime(),
           )
           .slice(0, 10) // Show last 10
           .map((c: HabitCompletion) => ({
@@ -224,7 +220,6 @@ export class HabitDetailPage implements OnInit {
 
   async saveHabit() {
     if (!this.habit.title?.trim()) {
-      this.showToast('Please enter a title');
       return;
     }
 
@@ -245,12 +240,10 @@ export class HabitDetailPage implements OnInit {
           if (createdHabit.reminder_enabled && createdHabit.reminder_time) {
             await this.notificationService.scheduleHabitReminder(createdHabit);
           }
-          this.showToast('Habit created!');
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
           console.error('Error creating habit:', error);
-          this.showToast('Error creating habit');
         },
       });
     } else {
@@ -258,19 +251,18 @@ export class HabitDetailPage implements OnInit {
 
       this.habitService.updateHabit(this.habitId, habitData).subscribe({
         next: async (updatedHabit: Habit) => {
-          if (updatedHabit) {
-            if (updatedHabit.reminder_enabled && updatedHabit.reminder_time) {
-              await this.notificationService.scheduleHabitReminder(updatedHabit);
-            } else {
-              await this.notificationService.cancelHabitReminder(this.habitId!);
-            }
+          // Always cancel existing reminder first
+          await this.notificationService.cancelHabitReminder(this.habitId!);
+
+          // Then schedule new one if enabled
+          if (updatedHabit && updatedHabit.reminder_enabled && updatedHabit.reminder_time) {
+            await this.notificationService.scheduleHabitReminder(updatedHabit);
           }
-          this.showToast('Habit saved!');
+
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
           console.error('Error updating habit:', error);
-          this.showToast('Error saving habit');
         },
       });
     }
@@ -283,12 +275,10 @@ export class HabitDetailPage implements OnInit {
       this.habitService.deleteHabit(this.habitId).subscribe({
         next: async () => {
           await this.notificationService.cancelHabitReminder(this.habitId!);
-          this.showToast('Habit deleted');
           this.router.navigate(['/tabs/today']);
         },
         error: (error: any) => {
           console.error('Error deleting habit:', error);
-          this.showToast('Error deleting habit');
         },
       });
     }
@@ -296,10 +286,5 @@ export class HabitDetailPage implements OnInit {
 
   cancel() {
     this.router.navigate(['/tabs/today']);
-  }
-
-  private showToast(message: string) {
-    this.toastMessage = message;
-    this.isToastOpen = true;
   }
 }
