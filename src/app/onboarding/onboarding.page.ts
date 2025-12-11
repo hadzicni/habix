@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { IonButton, IonContent, IonIcon, IonInput, IonItem } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  arrowBackOutline,
   arrowForwardOutline,
   checkmarkCircleOutline,
   flameOutline,
@@ -67,11 +68,12 @@ export class OnboardingPage {
 
   constructor(private router: Router) {
     addIcons({
+      arrowBackOutline,
+      arrowForwardOutline,
       checkmarkCircleOutline,
       flameOutline,
       statsChartOutline,
       notificationsOutline,
-      arrowForwardOutline,
       personOutline,
     });
   }
