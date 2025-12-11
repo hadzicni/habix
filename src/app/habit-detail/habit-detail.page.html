@@ -16,7 +16,10 @@
   <div class="content-wrapper">
     <ion-list>
       <!-- Title -->
-      <ion-item [class.ion-invalid]="validationErrors['title'] && touched['title']" [class.ion-valid]="!validationErrors['title'] && touched['title'] && habit.title">
+      <ion-item
+        [class.ion-invalid]="validationErrors['title'] && touched['title']"
+        [class.ion-valid]="!validationErrors['title'] && touched['title'] && habit.title"
+      >
         <ion-label position="stacked">Habit Name *</ion-label>
         <ion-input
           [(ngModel)]="habit.title"
@@ -28,8 +31,7 @@
         ></ion-input>
         @if (validationErrors['title'] && touched['title']) {
         <ion-note slot="error" color="danger">{{ validationErrors['title'] }}</ion-note>
-        }
-        @if (!validationErrors['title'] && touched['title'] && habit.title) {
+        } @if (!validationErrors['title'] && touched['title'] && habit.title) {
         <ion-note slot="helper" color="success">✓ Looks good!</ion-note>
         }
       </ion-item>
@@ -48,8 +50,7 @@
         ></ion-textarea>
         @if (validationErrors['description'] && touched['description']) {
         <ion-note slot="error" color="danger">{{ validationErrors['description'] }}</ion-note>
-        }
-        @if (habit.description) {
+        } @if (habit.description) {
         <ion-note slot="helper">{{ habit.description.length }}/200 characters</ion-note>
         }
       </ion-item>
@@ -98,12 +99,15 @@
 
       <!-- Reminder Time -->
       @if (habit.reminder_enabled) {
-      <ion-item [class.ion-invalid]="validationErrors['reminderTime'] && touched['reminderTime']" [class.ion-valid]="!validationErrors['reminderTime'] && touched['reminderTime'] && habit.reminder_time">
+      <ion-item
+        [class.ion-invalid]="validationErrors['reminderTime'] && touched['reminderTime']"
+        [class.ion-valid]="!validationErrors['reminderTime'] && touched['reminderTime'] && habit.reminder_time"
+      >
         <ion-icon name="time-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Reminder Time *</ion-label>
-        <ion-input 
-          type="time" 
-          [(ngModel)]="habit.reminder_time" 
+        <ion-input
+          type="time"
+          [(ngModel)]="habit.reminder_time"
           placeholder="HH:MM"
           (ionBlur)="onReminderTimeBlur()"
           (ionInput)="validateReminderTime()"
@@ -111,9 +115,11 @@
         ></ion-input>
         @if (validationErrors['reminderTime'] && touched['reminderTime']) {
         <ion-note slot="error" color="danger">{{ validationErrors['reminderTime'] }}</ion-note>
-        }
-        @if (!validationErrors['reminderTime'] && touched['reminderTime'] && habit.reminder_time) {
-        <ion-note slot="helper" color="success">✓ Reminder will be sent at {{ habit.reminder_time }}</ion-note>
+        } @if (!validationErrors['reminderTime'] && touched['reminderTime'] && habit.reminder_time)
+        {
+        <ion-note slot="helper" color="success"
+          >✓ Reminder will be sent at {{ habit.reminder_time }}</ion-note
+        >
         }
       </ion-item>
       }
