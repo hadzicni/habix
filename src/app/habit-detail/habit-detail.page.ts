@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  AlertController,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -125,6 +126,7 @@ export class HabitDetailPage implements OnInit {
     private router: Router,
     private habitService: HabitService,
     private notificationService: NotificationService,
+    private alertController: AlertController,
   ) {
     addIcons({
       saveOutline,
@@ -271,17 +273,33 @@ export class HabitDetailPage implements OnInit {
   async deleteHabit() {
     if (!this.habitId) return;
 
-    if (confirm('Do you really want to delete this habit?')) {
-      this.habitService.deleteHabit(this.habitId).subscribe({
-        next: async () => {
-          await this.notificationService.cancelHabitReminder(this.habitId!);
-          this.router.navigate(['/tabs/today']);
+    const alert = await this.alertController.create({
+      header: 'Delete Habit',
+      message: 'Are you sure you want to delete this habit? This action cannot be undone.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
         },
-        error: (error: any) => {
-          console.error('Error deleting habit:', error);
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.habitService.deleteHabit(this.habitId!).subscribe({
+              next: async () => {
+                await this.notificationService.cancelHabitReminder(this.habitId!);
+                this.router.navigate(['/tabs/today']);
+              },
+              error: (error: any) => {
+                console.error('Error deleting habit:', error);
+              },
+            });
+          },
         },
-      });
-    }
+      ],
+    });
+
+    await alert.present();
   }
 
   cancel() {
