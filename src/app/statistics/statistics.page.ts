@@ -197,4 +197,17 @@ export class StatisticsPage implements OnInit {
       event.target.complete();
     }, 1000);
   }
+
+  formatWeek(weekString: string): string {
+    // Format: "2025-W50" -> "Week 50"
+    const weekNum = weekString.split('-W')[1];
+    return `W${weekNum}`;
+  }
+
+  formatMonth(monthString: string): string {
+    // Format: "2025-12" -> "Dec 2025"
+    const [year, month] = monthString.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1);
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
 }

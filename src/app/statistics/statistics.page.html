@@ -96,6 +96,39 @@
         <div class="progress-bar">
           <div class="progress-fill" [style.width.%]="getCompletionRate(habitWithStats)"></div>
         </div>
+
+        <!-- Weekly Data -->
+        @if (habitWithStats.stats.weekly_data && habitWithStats.stats.weekly_data.length > 0) {
+        <div class="weekly-section">
+          <h5>Weekly Progress (Last 12 Weeks)</h5>
+          <div class="weekly-grid">
+            @for (week of habitWithStats.stats.weekly_data; track week.week) {
+            <div class="week-item">
+              <div class="week-label">{{ formatWeek(week.week) }}</div>
+              <div class="week-value">{{ week.completions }}</div>
+            </div>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Monthly Data -->
+        @if (habitWithStats.stats.monthly_data && habitWithStats.stats.monthly_data.length > 0) {
+        <div class="monthly-section">
+          <h5>Monthly Overview (Last 6 Months)</h5>
+          <div class="monthly-grid">
+            @for (month of habitWithStats.stats.monthly_data; track month.month) {
+            <div class="month-item">
+              <div class="month-label">{{ formatMonth(month.month) }}</div>
+              <div class="month-stats">
+                <span class="month-completions">{{ month.completions }} days</span>
+                <span class="month-rate">{{ month.completionRate }}%</span>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+        }
       </div>
       }
 

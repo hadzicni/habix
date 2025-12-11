@@ -318,12 +318,182 @@ export class HabitService {
   }
 
   private calculateWeeklyData(completions: HabitCompletion[]): WeeklyCompletions[] {
-    // Simplified implementation - return empty for now
-    return [];
+    if (completions.length === 0) return [];
+
+    const weeklyMap = new Map<string, { completions: number; dates: Date[] }>();
+
+    completions.forEach((completion) => {
+      const date = new Date(completion.completed_at);
+      const weekKey = this.getISOWeek(date);
+
+      if (weeklyMap.has(weekKey)) {
+        const existing = weeklyMap.get(weekKey)!;
+        existing.completions++;
+        existing.dates.push(date);
+      } else {
+        weeklyMap.set(weekKey, { completions: 1, dates: [date] });
+      }
+    });
+
+    return Array.from(weeklyMap.entries())
+      .map(([week, data]) => ({
+        week,
+        completions: data.completions,
+        completionDays: data.dates,
+      }))
+      .sort((a, b) => b.week.localeCompare(a.week))
+      .slice(0, 12); // Last 12 weeks
   }
 
   private calculateMonthlyData(completions: HabitCompletion[]): MonthlyCompletions[] {
-    // Simplified implementation - return empty for now
-    return [];
+    if (completions.length === 0) return [];
+
+    const monthlyMap = new Map<string, number>();
+
+    completions.forEach((completion) => {
+      const date = new Date(completion.completed_at);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+      monthlyMap.set(monthKey, (monthlyMap.get(monthKey) || 0) + 1);
+    });
+
+    return Array.from(monthlyMap.entries())
+      .map(([month, count]) => {
+        const [year, monthNum] = month.split('-').map(Number);
+        const daysInMonth = new Date(year, monthNum, 0).getDate();
+        const completionRate = (count / daysInMonth) * 100;
+
+        return {
+          month,
+          completions: count,
+          completionRate: Math.round(completionRate),
+        };
+      })
+      .sort((a, b) => b.month.localeCompare(a.month))
+      .slice(0, 6); // Last 6 months
+  }
+
+  private getISOWeek(date: Date): string {
+    const tempDate = new Date(date.getTime());
+    tempDate.setHours(0, 0, 0, 0);
+    tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
+    const week1 = new Date(tempDate.getFullYear(), 0, 4);
+    const weekNumber =
+      1 +
+      Math.round(
+        ((tempDate.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7,
+      );
+    return `${tempDate.getFullYear()}-W${String(weekNumber).padStart(2, '0')}`;
+  }
+
+  // Generate test data for demonstration purposes
+  async generateTestData(): Promise<void> {
+    const testHabits = [
+      {
+        title: 'Morning Exercise',
+        description: 'Do 20 minutes of exercise every morning',
+        icon: 'fitness',
+        color: '#10b981',
+        reminder_time: '07:00',
+        reminder_enabled: true,
+        is_active: true,
+      },
+      {
+        title: 'Read Book',
+        description: 'Read at least 20 pages daily',
+        icon: 'book',
+        color: '#667eea',
+        reminder_time: '20:00',
+        reminder_enabled: true,
+        is_active: true,
+      },
+      {
+        title: 'Meditation',
+        description: 'Meditate for 10 minutes',
+        icon: 'planet',
+        color: '#764ba2',
+        reminder_time: '06:30',
+        reminder_enabled: false,
+        is_active: true,
+      },
+      {
+        title: 'Drink Water',
+        description: 'Drink 8 glasses of water',
+        icon: 'water',
+        color: '#3b82f6',
+        reminder_time: '09:00',
+        reminder_enabled: true,
+        is_active: true,
+      },
+      {
+        title: 'Learn German',
+        description: 'Practice German for 15 minutes',
+        icon: 'school',
+        color: '#f59e0b',
+        reminder_time: '18:00',
+        reminder_enabled: false,
+        is_active: true,
+      },
+    ];
+
+    // Create habits
+    const createdHabits: Habit[] = [];
+    for (const habitData of testHabits) {
+      const habit = await this.createHabit(habitData).toPromise();
+      if (habit) {
+        createdHabits.push(habit);
+      }
+    }
+
+    // Generate completions for the last 90 days
+    const today = new Date();
+    for (const habit of createdHabits) {
+      const completions: HabitCompletion[] = [];
+      
+      // Random success rate between 60-95%
+      const successRate = 0.6 + Math.random() * 0.35;
+      
+      for (let i = 0; i < 90; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        
+        // Randomly decide if habit was completed on this day
+        if (Math.random() < successRate) {
+          // Random time of day
+          date.setHours(Math.floor(Math.random() * 12) + 8); // Between 8am and 8pm
+          date.setMinutes(Math.floor(Math.random() * 60));
+          
+          completions.push({
+            habit_id: habit.id!,
+            completed_at: date,
+            notes: '',
+          });
+        }
+      }
+
+      // Save completions
+      for (const completion of completions) {
+        await this.completeHabit(completion.habit_id, completion.completed_at).toPromise();
+      }
+    }
+
+    // Trigger refresh
+    await this.syncHabits();
+  }
+
+  // Clear all data (useful for testing)
+  async clearAllData(): Promise<void> {
+    // Clear from Supabase
+    if (await this.networkService.isOnline()) {
+      await this.supabase.from('habit_completions').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      await this.supabase.from('habits').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    }
+
+    // Clear local storage
+    await this.storageService.saveHabits([]);
+    await this.storageService.clearAllCompletions();
+
+    // Update subject
+    this.habitsSubject.next([]);
   }
 }

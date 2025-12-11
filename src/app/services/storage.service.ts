@@ -197,4 +197,12 @@ export class StorageService {
       throw error;
     }
   }
+
+  // Clear all completions
+  async clearAllCompletions(): Promise<void> {
+    await Preferences.set({
+      key: this.COMPLETIONS_KEY,
+      value: JSON.stringify([]),
+    });
+  }
 }
