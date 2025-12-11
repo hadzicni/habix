@@ -37,8 +37,12 @@ import {
   moon,
   musicalNotes,
   notificationsOutline,
+  pencil,
+  phonePortraitOutline,
+  planet,
   restaurant,
   saveOutline,
+  school,
   sunny,
   timeOutline,
   trashOutline,
@@ -111,6 +115,10 @@ export class HabitDetailPage implements OnInit {
     { name: 'brush', label: 'Art' },
     { name: 'musical-notes', label: 'Music' },
     { name: 'heart', label: 'Love' },
+    { name: 'planet', label: 'Meditation' },
+    { name: 'school', label: 'Learn' },
+    { name: 'phone-portrait-outline', label: 'Phone' },
+    { name: 'pencil', label: 'Write' },
   ];
 
   availableColors = [
@@ -158,6 +166,10 @@ export class HabitDetailPage implements OnInit {
       musicalNotes,
       heart,
       checkmarkCircle,
+      planet,
+      school,
+      phonePortraitOutline,
+      pencil,
     });
   }
 

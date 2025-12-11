@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
   IonAlert,
+  IonButton,
   IonCheckbox,
   IonContent,
   IonFab,
@@ -14,10 +15,13 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
+  LoadingController,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   add,
+  addCircleOutline,
   barbell,
   bed,
   bicycle,
@@ -28,6 +32,7 @@ import {
   ellipsisVertical,
   fitness,
   flame,
+  flaskOutline,
   heart,
   leaf,
   medkit,
@@ -63,6 +68,7 @@ import { NotificationService } from 'src/app/services/notification.service';
     IonIcon,
     IonFab,
     IonFabButton,
+    IonButton,
     IonAlert,
     IonRefresher,
     IonRefresherContent,
@@ -144,12 +150,16 @@ export class TodayPage implements OnInit {
     private habitService: HabitService,
     private notificationService: NotificationService,
     private router: Router,
+    private loadingController: LoadingController,
+    private toastController: ToastController,
   ) {
     addIcons({
       add,
+      addCircleOutline,
       checkmarkCircle,
       ellipsisVertical,
       flame,
+      flaskOutline,
       timeOutline,
       checkboxOutline,
       trash,
@@ -239,6 +249,35 @@ export class TodayPage implements OnInit {
 
   openAddHabitAlert() {
     this.router.navigate(['/tabs/habit-detail']);
+  }
+
+  async generateTestData() {
+    const loading = await this.loadingController.create({
+      message: 'Generating test data...',
+    });
+    await loading.present();
+
+    try {
+      await this.habitService.generateTestData();
+      await loading.dismiss();
+
+      const toast = await this.toastController.create({
+        message: '✅ Test data generated successfully!',
+        duration: 2000,
+        color: 'success',
+        position: 'top',
+      });
+      await toast.present();
+    } catch (error) {
+      await loading.dismiss();
+      const toast = await this.toastController.create({
+        message: '❌ Error generating test data',
+        duration: 2000,
+        color: 'danger',
+        position: 'top',
+      });
+      await toast.present();
+    }
   }
 
   editHabit(habitId: string) {

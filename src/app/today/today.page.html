@@ -121,6 +121,18 @@
         </div>
         <h3>No habits yet</h3>
         <p>Start your journey to better habits!</p>
+        
+        <div class="empty-state-actions">
+          <ion-button expand="block" (click)="openAddHabitAlert()" class="primary-action">
+            <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+            Create Your First Habit
+          </ion-button>
+          
+          <ion-button expand="block" fill="outline" (click)="generateTestData()" class="secondary-action">
+            <ion-icon slot="start" name="flask-outline"></ion-icon>
+            Generate Test Data
+          </ion-button>
+        </div>
       </div>
       }
     </div>
