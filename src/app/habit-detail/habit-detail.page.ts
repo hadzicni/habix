@@ -302,7 +302,8 @@ export class HabitDetailPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Delete Habit?',
       subHeader: this.habit.title || '',
-      message: 'This will permanently delete all data including history and statistics. This action cannot be undone.',
+      message:
+        'This will permanently delete all data including history and statistics. This action cannot be undone.',
       buttons: [
         {
           text: 'Cancel',
