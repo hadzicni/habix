@@ -14,6 +14,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonNote,
   IonTextarea,
   IonTitle,
   IonToggle,
@@ -70,12 +71,17 @@ import { NotificationService } from '../services/notification.service';
     IonTextarea,
     IonToggle,
     IonIcon,
+    IonNote,
   ],
 })
 export class HabitDetailPage implements OnInit {
   habitId: string | null = null;
   isNewHabit = true;
   completions: (HabitCompletion & { formattedDate?: string })[] = [];
+
+  // Validation state
+  validationErrors: { [key: string]: string } = {};
+  touched: { [key: string]: boolean } = {};
 
   habit: Partial<Habit> = {
     title: '',
@@ -163,6 +169,70 @@ export class HabitDetailPage implements OnInit {
     this.habit.color = color;
   }
 
+  validateTitle() {
+    this.touched['title'] = true;
+    if (!this.habit.title || this.habit.title.trim().length === 0) {
+      this.validationErrors['title'] = 'Habit name is required';
+      return false;
+    }
+    if (this.habit.title.trim().length < 3) {
+      this.validationErrors['title'] = 'Name must be at least 3 characters';
+      return false;
+    }
+    if (this.habit.title.trim().length > 50) {
+      this.validationErrors['title'] = 'Name must not exceed 50 characters';
+      return false;
+    }
+    delete this.validationErrors['title'];
+    return true;
+  }
+
+  validateDescription() {
+    this.touched['description'] = true;
+    if (this.habit.description && this.habit.description.length > 200) {
+      this.validationErrors['description'] = 'Description must not exceed 200 characters';
+      return false;
+    }
+    delete this.validationErrors['description'];
+    return true;
+  }
+
+  validateReminderTime() {
+    this.touched['reminderTime'] = true;
+    if (this.habit.reminder_enabled && !this.habit.reminder_time) {
+      this.validationErrors['reminderTime'] = 'Please set a reminder time';
+      return false;
+    }
+    if (this.habit.reminder_time) {
+      const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+      if (!timeRegex.test(this.habit.reminder_time)) {
+        this.validationErrors['reminderTime'] = 'Invalid time format (HH:MM)';
+        return false;
+      }
+    }
+    delete this.validationErrors['reminderTime'];
+    return true;
+  }
+
+  validateForm(): boolean {
+    const isTitleValid = this.validateTitle();
+    const isDescriptionValid = this.validateDescription();
+    const isReminderValid = this.validateReminderTime();
+    return isTitleValid && isDescriptionValid && isReminderValid;
+  }
+
+  onTitleBlur() {
+    this.validateTitle();
+  }
+
+  onDescriptionBlur() {
+    this.validateDescription();
+  }
+
+  onReminderTimeBlur() {
+    this.validateReminderTime();
+  }
+
   async ngOnInit() {
     this.habitId = this.route.snapshot.paramMap.get('id');
 
@@ -223,11 +293,19 @@ export class HabitDetailPage implements OnInit {
   }
 
   async saveHabit() {
-    if (!this.habit.title?.trim()) {
+    // Mark all fields as touched
+    this.touched['title'] = true;
+    this.touched['description'] = true;
+    this.touched['reminderTime'] = true;
+
+    // Validate all fields
+    if (!this.validateForm()) {
+      // Show first error
+      const firstError = Object.values(this.validationErrors)[0];
       const toast = await this.toastController.create({
-        message: 'Please enter a habit name',
-        duration: 2000,
-        color: 'warning',
+        message: firstError,
+        duration: 3000,
+        color: 'danger',
         position: 'top',
         icon: 'alert-circle-outline',
       });
@@ -236,7 +314,7 @@ export class HabitDetailPage implements OnInit {
     }
 
     const habitData: Omit<Habit, 'id' | 'created_at' | 'updated_at'> = {
-      title: this.habit.title,
+      title: this.habit.title!, // Guaranteed by validation
       description: this.habit.description || '',
       icon: this.habit.icon,
       color: this.habit.color,
