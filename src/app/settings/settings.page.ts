@@ -27,6 +27,7 @@ import {
   informationCircleOutline,
   moonOutline,
   notificationsOutline,
+  personOutline,
   reloadOutline,
   trashOutline,
 } from 'ionicons/icons';
@@ -58,6 +59,7 @@ import { ThemeMode, ThemeService } from 'src/app/services/theme.service';
 export class SettingsPage implements OnInit {
   themeMode: ThemeMode = 'system';
   notificationsEnabled: boolean = true;
+  userName: string = '';
 
   constructor(
     private themeService: ThemeService,
@@ -79,12 +81,14 @@ export class SettingsPage implements OnInit {
       flaskOutline,
       trashOutline,
       alarmOutline,
+      personOutline,
     });
   }
 
   async ngOnInit() {
     await this.loadThemePreference();
     await this.loadNotificationSettings();
+    this.loadUserName();
   }
 
   async loadThemePreference() {
@@ -94,6 +98,57 @@ export class SettingsPage implements OnInit {
   async loadNotificationSettings() {
     const settings = await this.storageService.getSettings();
     this.notificationsEnabled = settings.notifications_enabled;
+  }
+
+  loadUserName() {
+    this.userName = localStorage.getItem('userName') || '';
+  }
+
+  async changeUserName() {
+    const alert = await this.alertController.create({
+      header: this.userName ? 'Change Name' : 'Add Name',
+      message: this.userName ? 'Enter your new name' : 'Enter your name',
+      inputs: [
+        {
+          name: 'name',
+          type: 'text',
+          placeholder: 'Your name',
+          value: this.userName,
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Save',
+          handler: (data) => {
+            if (data.name && data.name.trim()) {
+              this.userName = data.name.trim();
+              localStorage.setItem('userName', this.userName);
+              this.showToast('Name saved successfully!', 'success');
+              return true;
+            } else {
+              this.showToast('Please enter a valid name', 'warning');
+              return false;
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'top',
+    });
+    await toast.present();
   }
 
   onThemeChange(event: any) {
@@ -130,6 +185,7 @@ export class SettingsPage implements OnInit {
   async handleRefresh(event: any) {
     await this.loadThemePreference();
     await this.loadNotificationSettings();
+    this.loadUserName();
     setTimeout(() => {
       event.target.complete();
     }, 500);
