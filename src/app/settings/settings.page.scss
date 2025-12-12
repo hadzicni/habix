@@ -9,6 +9,10 @@
 .settings-section {
   padding: 0 20px;
   margin-bottom: 32px;
+
+  &:last-child {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .section-header {

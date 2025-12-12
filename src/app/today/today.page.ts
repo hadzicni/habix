@@ -256,7 +256,8 @@ export class TodayPage implements OnInit {
   async generateTestData() {
     const alert = await this.alertController.create({
       header: 'Generate Test Data',
-      message: 'This will create 3 sample habits with random completions from the last 50 days. Note: Notifications are not set for sample habits and must be configured individually.',
+      message:
+        'This will create 3 sample habits with random completions from the last 50 days. Note: Notifications are not set for sample habits and must be configured individually.',
       buttons: [
         {
           text: 'Cancel',
