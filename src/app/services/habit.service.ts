@@ -231,6 +231,21 @@ export class HabitService {
     }
   }
 
+  async refreshHabits(): Promise<void> {
+    try {
+      // Load from local storage first for immediate update
+      const localHabits = await this.storageService.getHabits();
+      this.habitsSubject.next(localHabits);
+
+      // Then sync with remote if online
+      if (await this.networkService.isOnline()) {
+        await this.syncHabits();
+      }
+    } catch (error) {
+      console.error('Error refreshing habits:', error);
+    }
+  }
+
   private async updateHabitStreak(habitId: string) {
     try {
       const completions = await this.storageService.getHabitCompletions(habitId);

@@ -399,12 +399,18 @@ export class TodayPage implements OnInit {
   }
 
   async handleRefresh(event: any) {
-    // Reload habits
-    this.todaysHabits$ = this.habitService.getTodaysHabits();
-
-    // Wait a bit for the data to load
-    setTimeout(() => {
+    try {
+      // Refresh habits from storage and sync with backend
+      await this.habitService.refreshHabits();
+      
+      // Reload today's habits observable
+      this.todaysHabits$ = this.habitService.getTodaysHabits();
+      
+      // Complete the refresh
       event.target.complete();
-    }, 1000);
+    } catch (error) {
+      console.error('Error refreshing:', error);
+      event.target.complete();
+    }
   }
 }
