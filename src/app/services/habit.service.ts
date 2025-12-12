@@ -11,6 +11,7 @@ import {
   WeeklyCompletions,
 } from '../interfaces/habit.interface';
 import { NetworkService } from './network.service';
+import { NotificationService } from './notification.service';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -24,6 +25,7 @@ export class HabitService {
 
   private storageService = inject(StorageService);
   private networkService = inject(NetworkService);
+  private notificationService = inject(NotificationService);
 
   private habitsSubject = new BehaviorSubject<Habit[]>([]);
   public habits$ = this.habitsSubject.asObservable();
@@ -442,6 +444,11 @@ export class HabitService {
       const habit = await this.createHabit(habitData).toPromise();
       if (habit) {
         createdHabits.push(habit);
+        
+        // Schedule notifications for habits with reminders enabled
+        if (habit.reminder_enabled && habit.reminder_time) {
+          await this.notificationService.scheduleHabitReminder(habit);
+        }
       }
     }
 
