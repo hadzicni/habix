@@ -444,7 +444,7 @@ export class HabitService {
       const habit = await this.createHabit(habitData).toPromise();
       if (habit) {
         createdHabits.push(habit);
-        
+
         // Schedule notifications for habits with reminders enabled
         if (habit.reminder_enabled && habit.reminder_time) {
           await this.notificationService.scheduleHabitReminder(habit);
