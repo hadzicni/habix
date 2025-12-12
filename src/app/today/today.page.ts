@@ -402,10 +402,10 @@ export class TodayPage implements OnInit {
     try {
       // Refresh habits from storage and sync with backend
       await this.habitService.refreshHabits();
-      
+
       // Reload today's habits observable
       this.todaysHabits$ = this.habitService.getTodaysHabits();
-      
+
       // Complete the refresh
       event.target.complete();
     } catch (error) {
