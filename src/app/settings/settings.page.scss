@@ -8,10 +8,10 @@
 
 .settings-section {
   padding: 0 20px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   &:last-child {
-    margin-bottom: env(safe-area-inset-bottom, 0px);
+    margin-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   }
 }
 

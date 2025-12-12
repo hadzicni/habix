@@ -11,7 +11,8 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  padding: 0 20px 24px 20px;
+  padding: 0 20px;
+  margin-bottom: 24px;
   animation: fadeIn 0.5s ease-out;
 }
 
@@ -102,7 +103,7 @@
 // Habits Stats Section
 .habits-stats-section {
   padding: 0 20px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 .section-header {

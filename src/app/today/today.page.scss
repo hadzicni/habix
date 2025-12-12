@@ -103,7 +103,7 @@
 // Habits Section
 .habits-section {
   padding: 0 20px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 .section-header {
