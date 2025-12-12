@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
+  AlertController,
   IonAlert,
   IonButton,
   IonCheckbox,
@@ -152,6 +153,7 @@ export class TodayPage implements OnInit {
     private router: Router,
     private loadingController: LoadingController,
     private toastController: ToastController,
+    private alertController: AlertController,
   ) {
     addIcons({
       add,
@@ -252,32 +254,49 @@ export class TodayPage implements OnInit {
   }
 
   async generateTestData() {
-    const loading = await this.loadingController.create({
-      message: 'Generating test data...',
+    const alert = await this.alertController.create({
+      header: 'Generate Test Data',
+      message: 'This will create 3 sample habits with random completions from the last 50 days. Note: Notifications are not set for sample habits and must be configured individually.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Generate',
+          handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Generating test data...',
+            });
+            await loading.present();
+
+            try {
+              await this.habitService.generateTestData();
+              await loading.dismiss();
+
+              const toast = await this.toastController.create({
+                message: '✅ Test data generated successfully!',
+                duration: 2000,
+                color: 'success',
+                position: 'top',
+              });
+              await toast.present();
+            } catch (error) {
+              await loading.dismiss();
+              const toast = await this.toastController.create({
+                message: '❌ Error generating test data',
+                duration: 2000,
+                color: 'danger',
+                position: 'top',
+              });
+              await toast.present();
+            }
+          },
+        },
+      ],
     });
-    await loading.present();
 
-    try {
-      await this.habitService.generateTestData();
-      await loading.dismiss();
-
-      const toast = await this.toastController.create({
-        message: '✅ Test data generated successfully!',
-        duration: 2000,
-        color: 'success',
-        position: 'top',
-      });
-      await toast.present();
-    } catch (error) {
-      await loading.dismiss();
-      const toast = await this.toastController.create({
-        message: '❌ Error generating test data',
-        duration: 2000,
-        color: 'danger',
-        position: 'top',
-      });
-      await toast.present();
-    }
+    await alert.present();
   }
 
   editHabit(habitId: string) {

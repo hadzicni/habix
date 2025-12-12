@@ -411,8 +411,7 @@ export class HabitService {
         description: 'Do 20 minutes of exercise every morning',
         icon: 'fitness',
         color: '#10b981',
-        reminder_time: '07:00',
-        reminder_enabled: true,
+        reminder_enabled: false,
         is_active: true,
         streak_count: 0,
       },
@@ -421,8 +420,7 @@ export class HabitService {
         description: 'Read at least 20 pages daily',
         icon: 'book',
         color: '#667eea',
-        reminder_time: '20:00',
-        reminder_enabled: true,
+        reminder_enabled: false,
         is_active: true,
         streak_count: 0,
       },
@@ -431,8 +429,7 @@ export class HabitService {
         description: 'Drink 8 glasses of water',
         icon: 'water',
         color: '#3b82f6',
-        reminder_time: '09:00',
-        reminder_enabled: true,
+        reminder_enabled: false,
         is_active: true,
         streak_count: 0,
       },
@@ -444,11 +441,8 @@ export class HabitService {
       const habit = await this.createHabit(habitData).toPromise();
       if (habit) {
         createdHabits.push(habit);
-
-        // Schedule notifications for habits with reminders enabled
-        if (habit.reminder_enabled && habit.reminder_time) {
-          await this.notificationService.scheduleHabitReminder(habit);
-        }
+        // Note: No notifications are scheduled for sample habits
+        // Users should set up their own reminder times
       }
     }
 

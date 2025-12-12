@@ -194,7 +194,7 @@ export class SettingsPage implements OnInit {
   async generateTestData() {
     const alert = await this.alertController.create({
       header: 'Generate Test Data',
-      message: 'This will create 10 sample habits with 90 days of random completions. Continue?',
+      message: 'This will create 3 sample habits with random completions from the last 50 days. Note: Notifications are not set for sample habits and must be configured individually.',
       buttons: [
         {
           text: 'Cancel',
