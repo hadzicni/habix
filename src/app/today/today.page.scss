@@ -103,7 +103,7 @@
 // Habits Section
 .habits-section {
   padding: 0 20px;
-  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .section-header {
@@ -262,7 +262,7 @@
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
   animation: fadeIn 0.5s ease-out;
 
   .empty-icon {

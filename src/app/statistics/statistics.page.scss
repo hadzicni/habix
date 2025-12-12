@@ -102,7 +102,7 @@
 // Habits Stats Section
 .habits-stats-section {
   padding: 0 20px;
-  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .section-header {
